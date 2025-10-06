@@ -1,0 +1,104 @@
+"use client";
+
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+
+function loginPage() {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const response = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+
+    if (response?.error) {
+      alert("invalid credentials");
+    } else {
+      router.push("/");
+    }
+  };
+
+  return (
+    <>
+      <div className="w-screen h-screen bg-[#0B031C] flex flex-col justify-center items-center">
+        <div className="relative w-[800px] h-[600px] p-[2px] rounded-xl overflow-hidden bg-gradient-to-r from-[#0b2f68] to-[#982822] items-center justify-center">
+          <div className="relative w-full h-full p-6 rounded-xl bg-[#0B031C]">
+            <div className="p-10">
+              <div className="w-[77.1px] h-[30.5px] ml-10 mt-10">
+                <img src="/logo.svg" alt="logo" />
+              </div>
+
+              <div className="mt-3">
+                <h1 className="font-heading text-[2rem] pl-10">
+                  Welcome Back!
+                </h1>
+              </div>
+
+              <div className="flex justify-center items-center mt-10">
+                <h3 className="mt-[1.4px] font-bold pl-10 font-segoe-ui text-[2rem] leading-[1.37px] text-[#edf4e3]">
+                  Login
+                </h3>
+              </div>
+
+              <div className="items-center p-5 pl-[10rem] pr-[10rem] pt-7">
+                <form
+                  onSubmit={handleSubmit}
+                  autoComplete="true"
+                  className="flex flex-col">
+                  <div className="mt-5 flex flex-col">
+                    <label htmlFor="email">Email</label>
+
+                    <input
+                      className="mt-[0.8rem] p-2 pl-5 rounded-[27px] border #707070 border-solid"
+                      id="email"
+                      autoComplete="true"
+                      type="email"
+                      placeholder="Enter your email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="mt-5 flex flex-col">
+                    <label htmlFor="password">Password</label>
+                    <input
+                      className="mt-[0.8rem] p-2 pl-5 rounded-[27px] border #707070 border-solid"
+                      id="password"
+                      autoComplete="true"
+                      type="password"
+                      placeholder="Enter your password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="relative">
+                    <div className="absolute right-0 w-[6rem] h-[2.5rem] p-[2px] rounded-xl overflow-hidden border-animate bg-gradient-to-r from-[#0b2f68] to-[#982822] flex justify-center mt-5">
+                      <button
+                        type="submit"
+                        className="w-full h-full rounded-xl bg-[#0B031C] cursor-pointer">
+                        Login
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+export default loginPage;
