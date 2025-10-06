@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import OtpPanel from "../components/otpPanel";
 
 function registerPage() {
   const [name, setName] = useState<string>("");
@@ -10,6 +11,7 @@ function registerPage() {
   const [confirmPassword, setComfirmPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [otpSection, setOtpSection] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -52,6 +54,11 @@ function registerPage() {
   return (
     <>
       <div className="w-screen h-screen bg-[#0B031C] flex flex-col justify-center items-center">
+        {!otpSection && (
+          <div className="absolute flex justify-center items-center z-10">
+            <OtpPanel />
+          </div>
+        )}
         <div className="relative w-[864px] h-[700px] p-[2px] rounded-xl overflow-hidden bg-gradient-to-r from-[#0b2f68] to-[#982822] items-center justify-center">
           <div className="relative w-full h-full p-6 rounded-xl bg-[#0B031C]">
             <div className="w-[77.1px] h-[30.5px] ml-10 mt-10">
@@ -97,7 +104,7 @@ function registerPage() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                     />
-                    <div className="absolute right-0 bottom-0 top-[12px] rounded-tr-[27px] rounded-br-[27px] w-[79px] h-[42px] flex justify-center items-center cursor-pointer border #707070 border-solid bg-gradient-to-r from-[#0b2f68] to-[#982822]">
+                    <div onClick={() => setOtpSection(true)} className="absolute right-0 bottom-0 top-[12px] rounded-tr-[27px] rounded-br-[27px] w-[79px] h-[42px] flex justify-center items-center cursor-pointer border #707070 border-solid bg-gradient-to-r from-[#0b2f68] to-[#982822]">
                       <span>verify</span>
                     </div>
                   </div>

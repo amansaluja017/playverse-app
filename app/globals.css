@@ -40,3 +40,9 @@ body {
     background-position: 100% 50%;
   }
 }
+
+.blur-bg {
+  background: rgba(255, 255, 255, 0.2); 
+  backdrop-filter: blur(20px); /* The actual blur */
+  -webkit-backdrop-filter: blur(20px); /* Safari support */
+}
