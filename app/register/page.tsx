@@ -54,8 +54,11 @@ function registerPage() {
   return (
     <>
       <div className="w-screen h-screen bg-[#0B031C] flex flex-col justify-center items-center">
-        {!otpSection && (
+        {otpSection && (
           <div className="absolute flex justify-center items-center z-10">
+            <div onClick={() => setOtpSection(false)} className="absolute right-20 top-20 cursor-pointer z-20">
+              <span className="text-white opacity-30">X</span>
+            </div>
             <OtpPanel />
           </div>
         )}
@@ -104,7 +107,9 @@ function registerPage() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                     />
-                    <div onClick={() => setOtpSection(true)} className="absolute right-0 bottom-0 top-[12px] rounded-tr-[27px] rounded-br-[27px] w-[79px] h-[42px] flex justify-center items-center cursor-pointer border #707070 border-solid bg-gradient-to-r from-[#0b2f68] to-[#982822]">
+                    <div
+                      onClick={() => setOtpSection(true)}
+                      className="absolute right-0 bottom-0 top-[12px] rounded-tr-[27px] rounded-br-[27px] w-[79px] h-[42px] flex justify-center items-center cursor-pointer border #707070 border-solid bg-gradient-to-r from-[#0b2f68] to-[#982822]">
                       <span>verify</span>
                     </div>
                   </div>

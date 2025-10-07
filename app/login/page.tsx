@@ -82,15 +82,23 @@ function loginPage() {
                     />
                   </div>
 
-                  <div className="relative">
-                    <div className="absolute right-0 w-[6rem] h-[2.5rem] p-[2px] rounded-xl overflow-hidden border-animate bg-gradient-to-r from-[#0b2f68] to-[#982822] flex justify-center mt-5">
-                      <button
-                        type="submit"
-                        className="w-full h-full rounded-xl bg-[#0B031C] cursor-pointer">
-                        Login
-                      </button>
-                    </div>
+                 <div className="flex justify-between">
+                  <div className="mt-3 flex gap-1 text-[#edf4e3] text-sm">
+                    <span>New user?</span>
+                    <span
+                      onClick={() => router.push("/register")}
+                      className="cursor-pointer text-[#014c9a] hover:underline">
+                      register
+                    </span>
                   </div>
+                  <div className="w-[6rem] h-[2.5rem] p-[2px] rounded-xl overflow-hidden border-animate bg-gradient-to-r from-[#0b2f68] to-[#982822] flex justify-center mt-5">
+                    <button
+                      type="submit"
+                      className="w-full h-full rounded-xl bg-[#0B031C] cursor-pointer flex items-center justify-center text-[#edf4e3] font-medium">
+                      login
+                    </button>
+                  </div>
+                </div>
                 </form>
               </div>
             </div>
