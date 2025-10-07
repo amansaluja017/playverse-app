@@ -62,14 +62,15 @@ function registerPage() {
             <OtpPanel />
           </div>
         )}
-        <div className="relative w-[864px] h-[700px] p-[2px] rounded-xl overflow-hidden bg-gradient-to-r from-[#0b2f68] to-[#982822] items-center justify-center">
+
+        <div className="relative w-[54rem] h-[43rem] p-[2px] rounded-xl overflow-hidden bg-gradient-to-br from-[#0b2f68] to-[#982822] items-center justify-center">
           <div className="relative w-full h-full p-6 rounded-xl bg-[#0B031C]">
             <div className="w-[77.1px] h-[30.5px] ml-10 mt-10">
               <img src="/logo.svg" alt="logo" />
             </div>
 
             <div>
-              <h1 className="font-heading text-[3rem] pl-10">Create Account</h1>
+              <h1 className="font-heading text-[2.7rem] pl-10">Create Account</h1>
               <p className="mt-[1.4px] mr-[103.4px] ml-[0.6px] pl-10 opacity-24 font-segoe-ui text-[1rem] leading-[1.37px] text-left text-[#edf4e3]">
                 Dive into the new world
               </p>
@@ -150,10 +151,10 @@ function registerPage() {
                       login
                     </span>
                   </div>
-                  <div className="w-[8rem] h-[3rem] p-[2px] rounded-xl overflow-hidden border-animate bg-gradient-to-r from-[#0b2f68] to-[#982822] flex justify-center mt-5">
+                  <div className="p-[2px] rounded-xl overflow-hidden border-animate bg-gradient-to-r from-[#0b2f68] to-[#982822] mt-5">
                     <button
                       type="submit"
-                      className="w-full h-full rounded-xl bg-[#0B031C] cursor-pointer flex items-center justify-center text-[#edf4e3] font-medium">
+                      className="py-3 px-5 rounded-xl bg-[#0B031C] cursor-pointer flex items-center justify-center text-[#edf4e3] font-medium">
                       Register
                     </button>
                   </div>

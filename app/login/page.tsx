@@ -31,10 +31,10 @@ function loginPage() {
   return (
     <>
       <div className="w-screen h-screen bg-[#0B031C] flex flex-col justify-center items-center">
-        <div className="relative w-[800px] h-[600px] p-[2px] rounded-xl overflow-hidden bg-gradient-to-r from-[#0b2f68] to-[#982822] items-center justify-center">
+        <div className="relative w-[50rem] h-[37rem] p-[2px] rounded-xl overflow-hidden bg-gradient-to-br from-[#0b2f68] to-[#982822] items-center justify-center">
           <div className="relative w-full h-full p-6 rounded-xl bg-[#0B031C]">
             <div className="p-10">
-              <div className="w-[77.1px] h-[30.5px] ml-10 mt-10">
+              <div className="w-[77.1px] h-[30.5px] ml-10">
                 <img src="/logo.svg" alt="logo" />
               </div>
 
@@ -70,7 +70,10 @@ function loginPage() {
                   </div>
 
                   <div className="mt-5 flex flex-col">
-                    <label htmlFor="password">Password</label>
+                    <div className="flex justify-between items-center">
+                      <label htmlFor="password">Password</label>
+                    <span onClick={() => router.push("/forget-password")} className="text-sm text-blue-800 cursor-pointer hover:underline">forgot password?</span>
+                    </div>
                     <input
                       className="mt-[0.8rem] p-2 pl-5 rounded-[27px] border #707070 border-solid"
                       id="password"
@@ -82,23 +85,23 @@ function loginPage() {
                     />
                   </div>
 
-                 <div className="flex justify-between">
-                  <div className="mt-3 flex gap-1 text-[#edf4e3] text-sm">
-                    <span>New user?</span>
-                    <span
-                      onClick={() => router.push("/register")}
-                      className="cursor-pointer text-[#014c9a] hover:underline">
-                      register
-                    </span>
+                  <div className="flex justify-between">
+                    <div className="mt-3 flex gap-1 text-[#edf4e3] text-sm">
+                      <span>New user?</span>
+                      <span
+                        onClick={() => router.push("/register")}
+                        className="cursor-pointer text-[#014c9a] hover:underline">
+                        register
+                      </span>
+                    </div>
+                    <div className="p-[2px] rounded-xl overflow-hidden border-animate bg-gradient-to-br from-[#0b2f68] to-[#982822] mt-5">
+                      <button
+                        type="submit"
+                        className="py-2 px-6 rounded-xl bg-[#0B031C] cursor-pointer flex items-center justify-center text-[#edf4e3] font-medium">
+                        login
+                      </button>
+                    </div>
                   </div>
-                  <div className="w-[6rem] h-[2.5rem] p-[2px] rounded-xl overflow-hidden border-animate bg-gradient-to-r from-[#0b2f68] to-[#982822] flex justify-center mt-5">
-                    <button
-                      type="submit"
-                      className="w-full h-full rounded-xl bg-[#0B031C] cursor-pointer flex items-center justify-center text-[#edf4e3] font-medium">
-                      login
-                    </button>
-                  </div>
-                </div>
                 </form>
               </div>
             </div>
