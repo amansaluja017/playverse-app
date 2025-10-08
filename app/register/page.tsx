@@ -12,6 +12,7 @@ function registerPage() {
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [otpSection, setOtpSection] = useState<boolean>(false);
+  const [otp, setOtp] = useState<string>("");
 
   const router = useRouter();
 
@@ -50,6 +51,33 @@ function registerPage() {
       alert("failed to register user");
     }
   };
+
+  const otpVerification = async () => {
+    console.log("otp verification");
+
+    try {
+      const response = await fetch("/api/auth/send-otp", {
+        method: "POST",
+        headers: {
+          "content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error("failed to send otp");
+      } else {
+        console.log(response);
+        setOtpSection(true);
+      }
+    } catch (error) {
+      console.error(error);
+      alert("failed to send otp");
+    }
+  }
 
   return (
     <>
@@ -109,7 +137,7 @@ function registerPage() {
                       onChange={(e) => setEmail(e.target.value)}
                     />
                     <div
-                      onClick={() => setOtpSection(true)}
+                      onClick={otpVerification}
                       className="absolute right-0 bottom-0 top-[12px] rounded-tr-[27px] rounded-br-[27px] w-[79px] h-[42px] flex justify-center items-center cursor-pointer border #707070 border-solid bg-gradient-to-r from-[#0b2f68] to-[#982822]">
                       <span>verify</span>
                     </div>

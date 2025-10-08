@@ -7,7 +7,32 @@ function uploadVideo() {
   const fileRef = useRef<HTMLInputElement>(null);
   const [value, setValue] = useState<boolean>(false);
   const [videoUrl, setVideoUrl] = useState<string>("");
-  console.log(fileRef);
+  const [filePreview, setFilePreview] = useState<string>("");
+
+  const dragOver = (e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    console.log("working");
+
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      const file = e.dataTransfer.files[0];
+      console.log(file)
+      setFilePreview(URL.createObjectURL(file));
+      console.log(file.name)
+
+
+      if(fileRef.current) {
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        fileRef.current.files = dataTransfer.files;
+      }
+    }
+  }
+
+  const handleDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+  };
+
+
   return (
     <div>
       <div className="w-screen h-screen bg-[#0B031C] flex flex-col justify-center items-center">
@@ -47,14 +72,15 @@ function uploadVideo() {
                 </div>
 
                 <div className="mt-5 flex flex-col">
-                  <label htmlFor="file">
+                  <label htmlFor="file" onDrop={dragOver}
+                    onDragOver={handleDragOver}>
                     File{" "}
-                    {!value ? (
+                    {!filePreview ? (
                       <InputFile />
                     ) : (
                       <div className="flex justify-center">
-                        <div className="bg-black h-[8rem] w-[8rem] rounded-2xl">
-                            <img src={videoUrl} alt="uploadedFile" />
+                        <div className="rounded-2xl h-[8rem] w-[8rem] overflow-hidden">
+                            <img className="w-full h-full object-fill object-center" src={filePreview} alt="uploadedFile" />
                         </div>
                       </div>
                     )}
@@ -68,6 +94,7 @@ function uploadVideo() {
                     onChange={(e) => {
                         setValue(true)
                         setVideoUrl(e.target.value)
+                        setFilePreview(URL.createObjectURL(e.target.files![0]))
                     }}
                   ></input>
                 </div>
