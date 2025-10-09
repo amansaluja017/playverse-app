@@ -1,8 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import OtpPanel from "../components/otpPanel";
+import { sitka } from "../layout";
 
 function registerPage() {
   const [name, setName] = useState<string>("");
@@ -13,11 +14,17 @@ function registerPage() {
   const [loading, setLoading] = useState<boolean>(false);
   const [otpSection, setOtpSection] = useState<boolean>(false);
   const [otp, setOtp] = useState<string>("");
+  const [isVerified, setIsVerified] = useState<boolean>(false);
 
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!isVerified) {
+      alert("Please verify your email first");
+      return;
+    }
 
     if (password !== confirmPassword) {
       alert("password and confirm password does not match");
@@ -34,6 +41,7 @@ function registerPage() {
           name,
           email,
           password,
+          isVerified,
         }),
       });
 
@@ -55,6 +63,11 @@ function registerPage() {
   const otpVerification = async () => {
     console.log("otp verification");
 
+    if (!email) {
+      alert("Please enter email");
+      return;
+    }
+
     try {
       const response = await fetch("/api/auth/send-otp", {
         method: "POST",
@@ -62,32 +75,43 @@ function registerPage() {
           "content-Type": "application/json",
         },
         body: JSON.stringify({
-          name,
           email,
         }),
-      })
+      });
 
       if (!response.ok) {
         throw new Error("failed to send otp");
       } else {
         console.log(response);
+
+        const data = await response.json();
+        console.log(data);
+        setOtp(data.otp);
         setOtpSection(true);
       }
     } catch (error) {
       console.error(error);
       alert("failed to send otp");
     }
-  }
+  };
 
   return (
     <>
       <div className="w-screen h-screen bg-[#0B031C] flex flex-col justify-center items-center">
         {otpSection && (
           <div className="absolute flex justify-center items-center z-10">
-            <div onClick={() => setOtpSection(false)} className="absolute right-20 top-20 cursor-pointer z-20">
+            <div
+              onClick={() => setOtpSection(false)}
+              className="absolute right-20 top-20 cursor-pointer z-20">
               <span className="text-white opacity-30">X</span>
             </div>
-            <OtpPanel />
+            <OtpPanel
+              serverOtp={Number(otp)}
+              setOtpSection={setOtpSection}
+              setIsVerified={setIsVerified}
+              email={email}
+              otpVerification={otpVerification}
+            />
           </div>
         )}
 
@@ -98,7 +122,9 @@ function registerPage() {
             </div>
 
             <div>
-              <h1 className="font-heading text-[2.7rem] pl-10">Create Account</h1>
+              <h1 className={`text-[2.7rem] pl-10 ${sitka.className}`}>
+                Create Account
+              </h1>
               <p className="mt-[1.4px] mr-[103.4px] ml-[0.6px] pl-10 opacity-24 font-segoe-ui text-[1rem] leading-[1.37px] text-left text-[#edf4e3]">
                 Dive into the new world
               </p>
@@ -114,7 +140,7 @@ function registerPage() {
                     Name
                   </label>
                   <input
-                    className="mt-[0.8rem] p-2 pl-5 rounded-[27px] border #707070 border-solid"
+                    className="mt-[0.8rem] p-2 pl-5 rounded-[27px] border #707070 border-solid placeholder:text-sm placeholder:opacity-40"
                     id="name"
                     autoComplete="true"
                     type="text"
@@ -128,7 +154,7 @@ function registerPage() {
                   <label htmlFor="email">Email</label>
                   <div className="relative">
                     <input
-                      className="w-full mt-[0.8rem] p-2 pl-5 rounded-[27px] border #707070 border-solid"
+                      className="w-full mt-[0.8rem] p-2 pl-5 rounded-[27px] border #707070 border-solid placeholder:text-sm placeholder:opacity-40"
                       id="email"
                       autoComplete="true"
                       type="email"
@@ -147,7 +173,7 @@ function registerPage() {
                 <div className="mt-5 flex flex-col">
                   <label htmlFor="password">Password</label>
                   <input
-                    className="mt-[0.8rem] p-2 pl-5 rounded-[27px] border #707070 border-solid"
+                    className="mt-[0.8rem] p-2 pl-5 rounded-[27px] border #707070 border-solid placeholder:text-sm placeholder:opacity-40"
                     id="password"
                     autoComplete="true"
                     type="password"
@@ -160,7 +186,7 @@ function registerPage() {
                 <div className="mt-5 flex flex-col">
                   <label htmlFor="confirmPassword">Confirm Password</label>
                   <input
-                    className="mt-[0.8rem] p-2 pl-5 rounded-[27px] border #707070 border-solid"
+                    className="mt-[0.8rem] p-2 pl-5 rounded-[27px] border #707070 border-solid placeholder:text-sm placeholder:opacity-40"
                     id="confirmPassword"
                     autoComplete="true"
                     type="password"
@@ -172,17 +198,17 @@ function registerPage() {
 
                 <div className="flex justify-between">
                   <div className="mt-3 flex gap-1 text-[#edf4e3] text-sm">
-                    <span>Already have a account?</span>
+                    <span className={`${sitka.className}`}>Already have a account?</span>
                     <span
                       onClick={() => router.push("/login")}
                       className="cursor-pointer text-[#014c9a] hover:underline">
                       login
                     </span>
                   </div>
-                  <div className="p-[2px] rounded-xl overflow-hidden border-animate bg-gradient-to-r from-[#0b2f68] to-[#982822] mt-5">
+                  <div className="p-[2px] rounded-2xl overflow-hidden border-animate bg-gradient-to-br from-[#0b2f68] to-[#982822] mt-5">
                     <button
                       type="submit"
-                      className="py-3 px-5 rounded-xl bg-[#0B031C] cursor-pointer flex items-center justify-center text-[#edf4e3] font-medium">
+                      className={`py-2 px-4 rounded-2xl bg-[#0B031C] cursor-pointer flex items-center justify-center text-[#edf4e3] font-medium ${sitka.className}`}>
                       Register
                     </button>
                   </div>

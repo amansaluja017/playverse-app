@@ -1,14 +1,47 @@
 "use client";
 
-import React, { JSX, useEffect, useId, useRef, useState } from "react";
+import React, {
+  Dispatch,
+  JSX,
+  SetStateAction,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from "react";
 
-function otpPanel(): JSX.Element {
+function otpPanel({
+  serverOtp,
+  setOtpSection,
+  setIsVerified,
+  email,
+  otpVerification,
+}: {
+  serverOtp: number;
+  setOtpSection: Dispatch<SetStateAction<boolean>>;
+  setIsVerified: Dispatch<SetStateAction<boolean>>;
+  email: string;
+  otpVerification: () => Promise<void>;
+}): JSX.Element {
   const [otp, setOtp] = useState<string[]>(new Array(6).fill(""));
   const [timeLeftInSeconds, setTimeLeftInSeconds] = useState<number>(59);
   const [timeLeftInMinutes, setTimeLeftInMinutes] = useState<number>(1);
 
   const otpRef = useRef<(HTMLInputElement | null)[]>([]);
+  const resendRef = useRef<HTMLButtonElement>(null);
   const otpId = useId();
+
+  const verifyOtp = () => {
+    const value = otp.join("");
+
+    if (serverOtp === Number(value)) {
+      alert("otp verified");
+      setOtpSection(false);
+      setIsVerified(true);
+    } else {
+      alert("please enter valid otp");
+    }
+  };
 
   const handleOtp = (value: string, i: number) => {
     if (isNaN(Number(value))) return;
@@ -29,31 +62,31 @@ function otpPanel(): JSX.Element {
   };
 
   useEffect(() => {
-    if (timeLeftInSeconds <= 0 && timeLeftInMinutes <= 0) return;
+    if (timeLeftInSeconds <= 0 && timeLeftInMinutes <= 0) {
+      resendRef.current?.removeAttribute("disabled");
+      return;
+    } else if (timeLeftInMinutes > 0 || timeLeftInSeconds > 0) {
+      resendRef.current?.setAttribute("disabled", "true");
+    }
 
     const timer = setInterval(() => {
       setTimeLeftInSeconds((prev) => prev - 1);
     }, 1000);
 
     if (timeLeftInSeconds === 0) {
-      setTimeLeftInSeconds(59);
+      setTimeLeftInSeconds(5);
       setTimeLeftInMinutes((prev) => prev - 1);
     }
 
     return () => clearInterval(timer);
   }, [timeLeftInSeconds, timeLeftInMinutes]);
 
-  const handleResend = () => {
-    setTimeLeftInMinutes(1);
-    setTimeLeftInSeconds(59);
-  };
-
   return (
     <div className="backdrop-blur-lg bg-gradient-to-br from-[#0b2f68]/40 to-[#982822]/40 w-[685px] h-[578px] rounded-[74px]">
       <div className="flex flex-col items-center justify-center h-full w-full">
         <div className="flex items-center flex-col gap-3">
           <h4 className="font-bold text-2xl">Verify your email</h4>
-          <p>we send otp on your email jo*******3@gmail.com</p>
+          <p>we send otp on your email <span className="italic text-blue-700">{email}</span></p>
         </div>
 
         <div className="flex gap-3 mt-10">
@@ -82,14 +115,21 @@ function otpPanel(): JSX.Element {
                 : `${timeLeftInMinutes}:${timeLeftInSeconds}`}
             </span>
           )}
-          <span
-            className="cursor-pointer text-blue-900"
-            onClick={() => handleResend()}>
+          <button
+            className="cursor-pointer text-blue-900 disabled:opacity-45 disabled:cursor-not-allowed"
+            ref={resendRef}
+            onClick={() => {
+              setTimeLeftInSeconds(59);
+              setTimeLeftInMinutes(1);
+              otpVerification();
+            }}>
             Resend
-          </span>
+          </button>
         </div>
 
-        <div className="rounded-2xl border-white border-2 mt-5">
+        <div
+          onClick={verifyOtp}
+          className="rounded-2xl border-white border-2 mt-5">
           <button className="py-1 px-6 cursor-pointer">verify</button>
         </div>
       </div>

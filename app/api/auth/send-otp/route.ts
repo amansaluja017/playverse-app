@@ -1,61 +1,40 @@
 import { NextRequest, NextResponse } from "next/server";
 import { TOTP } from "totp-generator";
-import nodemailer from "nodemailer";
-
-// Keys provided must be base32 strings, ie. only containing characters matching (A-Z, 2-7, =).
-const { otp, expires } = await TOTP.generate("JBSWY3DPEHPK3PXP", {
-	digits: 6,
-	algorithm: "SHA-512",
-})
-
-console.table({ otp, expires });
+import { mailOptions } from "@/nodemailer/nodemailer.config";
 
 
 export async function POST(req: NextRequest) {
   try {
-    const { name, email } = await req.json();
+    const { email } = await req.json();
+    console.log(email);
 
-    if(!email) {
-        return NextResponse.json(
-            {error: "Email is required"},
-            {status: 400}
-        );
+    if (!email) {
+      return NextResponse.json(
+        { error: "Email is required" },
+        { status: 400 }
+      );
     }
 
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: "amansaluja017@gmail.com",
-        pass: "pglhdmuazvdkzpvl", 
-      },
-    });
+    const { otp, expires } = await TOTP.generate("JBSWY3DPEHPK3PXP", {
+      digits: 6,
+      algorithm: "SHA-512",
+    })
 
-    const mailOptions = {
-      from: "amansaluja017@gmail.com",
-      to: email,
-      subject: `New message from ${name}`,
-      text: otp,
-    };
+    console.table({ otp, expires });
 
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log("Email sent: " + info.response);
-        }
-    });
+    mailOptions(process.env.NODEMAILER_USER as string, email, "Your OTP Code", `Your OTP code is ${otp}. It will expire in 5 minutes.`);
 
     return NextResponse.json({
-        message: "OTP sent successfully",
-        otp,
-        expires,
-        status: 200
+      message: "OTP sent successfully",
+      otp,
+      expires,
+      status: 200
     });
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-        {error: "Failed to send OTP"},
-        {status: 500}
+      { error: "Failed to send OTP" },
+      { status: 500 }
     );
   }
-}
+};

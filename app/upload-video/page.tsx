@@ -2,6 +2,7 @@
 
 import React, { useRef, useState } from "react";
 import InputFile from "../components/inputFile";
+import { sitka } from "../layout";
 
 function uploadVideo() {
   const fileRef = useRef<HTMLInputElement>(null);
@@ -37,7 +38,7 @@ function uploadVideo() {
     <div>
       <div className="w-screen h-screen bg-[#0B031C] flex flex-col justify-center items-center">
         <div className="text-start">
-          <h1 className="font-heading text-[2rem] pl-10 mb-4">Upload Video</h1>
+          <h1 className={`font-heading text-[2rem] ${sitka.className} pl-10 mb-4`}>Upload Video</h1>
         </div>
         <div className="relative p-[2px] rounded-xl overflow-hidden bg-gradient-to-br from-[#0b2f68] to-[#982822] items-center justify-center">
           <div className="relative w-full h-full p-6 rounded-xl bg-[#0B031C] flex flex-col justify-center">
@@ -103,7 +104,7 @@ function uploadVideo() {
                   <div className="absolute right-3 p-[2px] rounded-xl overflow-hidden border-animate bg-gradient-to-br from-[#0b2f68] to-[#982822] mt-8">
                     <button
                       type="submit"
-                      className="py-2 px-5 rounded-xl bg-[#0B031C] cursor-pointer flex items-center justify-center text-[#edf4e3] font-medium">
+                      className={`py-2 px-4 rounded-xl bg-[#0B031C] cursor-pointer flex items-center justify-center text-[#edf4e3] font-medium ${sitka.className}`}>
                       Post
                     </button>
                   </div>

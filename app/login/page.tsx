@@ -3,6 +3,7 @@
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { sitka } from "../layout";
 
 function loginPage() {
   const [email, setEmail] = useState<string>("");
@@ -39,13 +40,13 @@ function loginPage() {
               </div>
 
               <div className="mt-3">
-                <h1 className="font-heading text-[2rem] pl-10">
+                <h1 className={`font-heading text-[2rem] pl-10 ${sitka.className}`}>
                   Welcome Back!
                 </h1>
               </div>
 
               <div className="flex justify-center items-center mt-10">
-                <h3 className="mt-[1.4px] font-bold pl-10 font-segoe-ui text-[2rem] leading-[1.37px] text-[#edf4e3]">
+                <h3 className={`mt-[1.4px] font-bold pl-10 ${sitka.className} text-[2.5rem] leading-[1.37px] text-[#edf4e3]`}>
                   Login
                 </h3>
               </div>
@@ -59,7 +60,7 @@ function loginPage() {
                     <label htmlFor="email">Email</label>
 
                     <input
-                      className="mt-[0.8rem] p-2 pl-5 rounded-[27px] border #707070 border-solid"
+                      className="mt-[0.8rem] p-2 pl-5 rounded-[27px] border #707070 border-solid placeholder:text-sm placeholder:opacity-40"
                       id="email"
                       autoComplete="true"
                       type="email"
@@ -75,7 +76,7 @@ function loginPage() {
                     <span onClick={() => router.push("/forget-password")} className="text-sm text-blue-800 cursor-pointer hover:underline">forgot password?</span>
                     </div>
                     <input
-                      className="mt-[0.8rem] p-2 pl-5 rounded-[27px] border #707070 border-solid"
+                      className="mt-[0.8rem] p-2 pl-5 rounded-[27px] border #707070 border-solid placeholder:text-sm placeholder:opacity-40"
                       id="password"
                       autoComplete="true"
                       type="password"
@@ -87,17 +88,17 @@ function loginPage() {
 
                   <div className="flex justify-between">
                     <div className="mt-3 flex gap-1 text-[#edf4e3] text-sm">
-                      <span>New user?</span>
+                      <span className={`${sitka.className}`}>New user?</span>
                       <span
                         onClick={() => router.push("/register")}
                         className="cursor-pointer text-[#014c9a] hover:underline">
                         register
                       </span>
                     </div>
-                    <div className="p-[2px] rounded-xl overflow-hidden border-animate bg-gradient-to-br from-[#0b2f68] to-[#982822] mt-5">
+                    <div className="p-[2px] rounded-2xl overflow-hidden border-animate bg-gradient-to-br from-[#0b2f68] to-[#982822] mt-5">
                       <button
                         type="submit"
-                        className="py-2 px-6 rounded-xl bg-[#0B031C] cursor-pointer flex items-center justify-center text-[#edf4e3] font-medium">
+                        className={`py-2 px-5 rounded-2xl bg-[#0B031C] cursor-pointer flex items-center justify-center text-[#edf4e3] font-medium ${sitka.className}`}>
                         login
                       </button>
                     </div>

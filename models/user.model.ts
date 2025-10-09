@@ -7,6 +7,7 @@ export interface Iuser {
     name: string,
     email: string,
     password: string,
+    isVerified: boolean,
     createdAt?: Date,
     updatedAt?: Date
 }
@@ -25,8 +26,13 @@ const userSchema = new mongoose.Schema<Iuser>(
         password: {
             type: String,
             required: true
+        },
+        isVerified: {
+            type: Boolean,
+            required: true,
+            default: false
         }
-    }, 
+    },
     {
         timestamps: true
     }
