@@ -1,37 +1,56 @@
 "use client";
 
-import React, { useRef, useState } from "react";
-import InputFile from "../components/inputFile";
+import React, { useState } from "react";
 import { sitka } from "../layout";
 import FileUpload from "../components/FileUpload";
+import Button from "../components/Button";
+import { apiClient, videoFormData } from "@/utils/api-client";
+import { UploadResponse } from "@imagekit/next";
+import { useRouter } from "next/router";
 
 function uploadVideo() {
-  const fileRef = useRef<HTMLInputElement>(null);
-  const [value, setValue] = useState<boolean>(false);
-  const [videoUrl, setVideoUrl] = useState<string>("");
-  const [filePreview, setFilePreview] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [videoData, setVideoData] = useState<UploadResponse>();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
-  // const dragOver = (e: React.DragEvent<HTMLLabelElement>) => {
-  //   e.preventDefault();
-  //   console.log("working");
+  const router = useRouter();
 
-  //   if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-  //     const file = e.dataTransfer.files[0];
-  //     console.log(file)
-  //     setFilePreview(URL.createObjectURL(file));
-  //     console.log(file.name)
+  const handlePostVideo = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
 
-  //     if(fileRef.current) {
-  //       const dataTransfer = new DataTransfer();
-  //       dataTransfer.items.add(file);
-  //       fileRef.current.files = dataTransfer.files;
-  //     }
-  //   }
-  // }
+    if (!videoData?.url) {
+      throw new Error("Upload a video");
+    } else if (!videoData?.thumbnailUrl) {
+      throw new Error("upload a thumbnail");
+    }
 
-  // const handleDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
-  //   e.preventDefault();
-  // };
+    try {
+      setLoading(true);
+      const response = await apiClient.createVideo({
+        title,
+        description,
+        videoUrl: videoData?.url,
+        thumbnailUrl: videoData?.thumbnailUrl,
+        controls: true,
+      });
+
+      const data = await response;
+
+      if (!data) {
+        alert("failed to create video");
+      } else {
+        router.push("/");
+      }
+    } catch (error) {
+      console.error(error);
+      setError("server error: Failed to upload image, try again after some time")
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div>
@@ -45,10 +64,7 @@ function uploadVideo() {
         <div className="relative p-[2px] rounded-xl overflow-hidden bg-gradient-to-br from-[#0b2f68] to-[#982822] items-center justify-center">
           <div className="relative w-full h-full p-6 rounded-xl bg-[#0B031C] flex flex-col justify-center">
             <div className="items-center justify-center p-5 pl-[5rem] pr-[5rem] pt-10 pb-20">
-              <form
-                // onSubmit={handleSubmit}
-                autoComplete="true"
-                className="flex flex-col">
+              <form autoComplete="true" className="flex flex-col">
                 <div className="flex flex-col">
                   <label className="" htmlFor="title">
                     Title
@@ -58,8 +74,8 @@ function uploadVideo() {
                     id="title"
                     autoComplete="true"
                     type="text"
-                    // value={name}
-                    // onChange={(e) => setName(e.target.value)}
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
                   />
                 </div>
 
@@ -69,48 +85,28 @@ function uploadVideo() {
                   <textarea
                     className="w-full mt-[0.8rem] p-2 pl-5 rounded-[27px] border #707070 border-solid"
                     id="description"
-                    //   value={email}
-                    //   onChange={(e) => setEmail(e.target.value)}
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
                   />
                 </div>
 
                 <div className="mt-5 flex flex-col">
-                  <FileUpload onSuccess={() => {}} onProgress={() => 0} />
-
-                  {/* <label htmlFor="file" onDrop={dragOver}
-                    onDragOver={handleDragOver}>
-                    File{" "}
-                    {!filePreview ? (
-                      <InputFile />
-                    ) : (
-                      <div className="flex justify-center">
-                        <div className="rounded-2xl h-[8rem] w-[8rem] overflow-hidden">
-                            <img className="w-full h-full object-fill object-center" src={filePreview} alt="uploadedFile" />
-                        </div>
-                      </div>
-                    )}
-                  </label>
-                  <input
-                    ref={fileRef}
-                    className="mt-[0.8rem] p-2 pl-5 rounded-[27px] border #707070 border-solid hidden"
-                    id="file"
-                    type="file"
-                    value={videoUrl}
-                    onChange={(e) => {
-                        setValue(true)
-                        setVideoUrl(e.target.value)
-                        setFilePreview(URL.createObjectURL(e.target.files![0]))
+                  <FileUpload
+                    onSuccess={(res: UploadResponse) => {
+                      setVideoData(res);
                     }}
-                  ></input> */}
+                    onProgress={() => 0}
+                  />
                 </div>
 
                 <div className="relative flex justify-between">
-                  <div className="absolute right-3 p-[2px] rounded-xl overflow-hidden border-animate bg-gradient-to-br from-[#0b2f68] to-[#982822] mt-8">
-                    <button
+                  <div className="mt-5">
+                    <Button
+                      buttonName="Post"
+                      className="py-2 px-4"
                       type="submit"
-                      className={`py-2 px-4 rounded-xl bg-[#0B031C] cursor-pointer flex items-center justify-center text-[#edf4e3] font-medium ${sitka.className}`}>
-                      Post
-                    </button>
+                      onClick={handlePostVideo}
+                    />
                   </div>
                 </div>
               </form>

@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import OtpPanel from "../components/otpPanel";
 import { sitka } from "../layout";
+import Button from "../components/Button";
 
 function registerPage() {
   const [name, setName] = useState<string>("");
@@ -205,12 +206,8 @@ function registerPage() {
                       login
                     </span>
                   </div>
-                  <div className="p-[2px] rounded-2xl overflow-hidden border-animate bg-gradient-to-br from-[#0b2f68] to-[#982822] mt-5">
-                    <button
-                      type="submit"
-                      className={`py-2 px-4 rounded-2xl bg-[#0B031C] cursor-pointer flex items-center justify-center text-[#edf4e3] font-medium ${sitka.className}`}>
-                      Register
-                    </button>
+                  <div className="mt-5">
+                    <Button type="submit" buttonName="Register" className="py-2 px-4" />
                   </div>
                 </div>
               </form>

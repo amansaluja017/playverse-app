@@ -9,8 +9,8 @@ export const authOptions: NextAuthOptions = {
         CredentialsProvider({
             name: "Credentials",
             credentials: {
-                email: {label: "Email", type: "text"},
-                password: {label: "Password", type: "password"}
+                email: { label: "Email", type: "text" },
+                password: { label: "Password", type: "password" }
             },
             async authorize(credentials) {
                 if (!credentials?.email || !credentials?.password) {
@@ -19,7 +19,7 @@ export const authOptions: NextAuthOptions = {
 
                 try {
                     await connectToDatabase();
-                    const user = await User.findOne({email: credentials.email})
+                    const user = await User.findOne({ email: credentials.email })
 
                     if (!user) {
                         throw new Error("no user found")
@@ -44,13 +44,13 @@ export const authOptions: NextAuthOptions = {
         })
     ],
     callbacks: {
-        async jwt({token, user}) {
+        async jwt({ token, user }) {
             if (user) {
                 token.id = user.id
             }
             return token;
         },
-        async session({token, session}) {
+        async session({ token, session }) {
             if (session.user) {
                 session.user.id = token.id as string
             }

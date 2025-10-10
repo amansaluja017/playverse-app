@@ -4,6 +4,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { sitka } from "../layout";
+import Button from "../components/Button";
 
 function loginPage() {
   const [email, setEmail] = useState<string>("");
@@ -95,12 +96,8 @@ function loginPage() {
                         register
                       </span>
                     </div>
-                    <div className="p-[2px] rounded-2xl overflow-hidden border-animate bg-gradient-to-br from-[#0b2f68] to-[#982822] mt-5">
-                      <button
-                        type="submit"
-                        className={`py-2 px-5 rounded-2xl bg-[#0B031C] cursor-pointer flex items-center justify-center text-[#edf4e3] font-medium ${sitka.className}`}>
-                        login
-                      </button>
+                    <div className="mt-5">
+                      <Button buttonName="login" className="py-2 px-5" type="submit" />
                     </div>
                   </div>
                 </form>

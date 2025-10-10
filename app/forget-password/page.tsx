@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import OtpPanel from "../components/otpPanel";
 import { sitka } from "../layout";
 import { useRouter } from "next/navigation";
+import Button from "../components/Button";
 
 function forgetPassword() {
   const [email, setEmail] = useState<string>("");
@@ -177,12 +178,8 @@ function forgetPassword() {
               </div>
 
               <div className="relative flex justify-between">
-                <div className="absolute right-3 p-[2px] rounded-2xl overflow-hidden border-animate bg-gradient-to-r from-[#0b2f68] to-[#982822] mt-5">
-                  <button
-                    type="submit"
-                    className={`px-5 py-2 rounded-2xl bg-[#0B031C] cursor-pointer flex items-center justify-center text-[#edf4e3] font-medium ${sitka.className}`}>
-                    submit
-                  </button>
+                <div className="absolute right-3 top-5">
+                  <Button buttonName="submit" className="px-5 py-2" type="submit" />
                 </div>
               </div>
             </form>
