@@ -3,6 +3,7 @@
 import React, { useRef, useState } from "react";
 import InputFile from "../components/inputFile";
 import { sitka } from "../layout";
+import FileUpload from "../components/FileUpload";
 
 function uploadVideo() {
   const fileRef = useRef<HTMLInputElement>(null);
@@ -10,35 +11,36 @@ function uploadVideo() {
   const [videoUrl, setVideoUrl] = useState<string>("");
   const [filePreview, setFilePreview] = useState<string>("");
 
-  const dragOver = (e: React.DragEvent<HTMLLabelElement>) => {
-    e.preventDefault();
-    console.log("working");
+  // const dragOver = (e: React.DragEvent<HTMLLabelElement>) => {
+  //   e.preventDefault();
+  //   console.log("working");
 
-    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      const file = e.dataTransfer.files[0];
-      console.log(file)
-      setFilePreview(URL.createObjectURL(file));
-      console.log(file.name)
+  //   if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+  //     const file = e.dataTransfer.files[0];
+  //     console.log(file)
+  //     setFilePreview(URL.createObjectURL(file));
+  //     console.log(file.name)
 
+  //     if(fileRef.current) {
+  //       const dataTransfer = new DataTransfer();
+  //       dataTransfer.items.add(file);
+  //       fileRef.current.files = dataTransfer.files;
+  //     }
+  //   }
+  // }
 
-      if(fileRef.current) {
-        const dataTransfer = new DataTransfer();
-        dataTransfer.items.add(file);
-        fileRef.current.files = dataTransfer.files;
-      }
-    }
-  }
-
-  const handleDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
-    e.preventDefault();
-  };
-
+  // const handleDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
+  //   e.preventDefault();
+  // };
 
   return (
     <div>
       <div className="w-screen h-screen bg-[#0B031C] flex flex-col justify-center items-center">
         <div className="text-start">
-          <h1 className={`font-heading text-[2rem] ${sitka.className} pl-10 mb-4`}>Upload Video</h1>
+          <h1
+            className={`font-heading text-[2rem] ${sitka.className} pl-10 mb-4`}>
+            Upload Video
+          </h1>
         </div>
         <div className="relative p-[2px] rounded-xl overflow-hidden bg-gradient-to-br from-[#0b2f68] to-[#982822] items-center justify-center">
           <div className="relative w-full h-full p-6 rounded-xl bg-[#0B031C] flex flex-col justify-center">
@@ -73,7 +75,9 @@ function uploadVideo() {
                 </div>
 
                 <div className="mt-5 flex flex-col">
-                  <label htmlFor="file" onDrop={dragOver}
+                  <FileUpload onSuccess={() => {}} onProgress={() => 0} />
+
+                  {/* <label htmlFor="file" onDrop={dragOver}
                     onDragOver={handleDragOver}>
                     File{" "}
                     {!filePreview ? (
@@ -97,7 +101,7 @@ function uploadVideo() {
                         setVideoUrl(e.target.value)
                         setFilePreview(URL.createObjectURL(e.target.files![0]))
                     }}
-                  ></input>
+                  ></input> */}
                 </div>
 
                 <div className="relative flex justify-between">
