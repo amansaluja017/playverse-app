@@ -1,4 +1,4 @@
-import mongoose, { models, mongo } from "mongoose"
+import mongoose, { Document, models } from "mongoose"
 
 export const video_dimentions = {
     height: 1920,
@@ -17,7 +17,8 @@ export interface Ivideo {
         height: number,
         width: number,
         quality: number
-    }
+    },
+    user?: mongoose.Schema.Types.ObjectId,
     createdAt?: Date,
     updatedAt?: Date
 };
@@ -35,7 +36,7 @@ const videoSchema = new mongoose.Schema<Ivideo>(
         thumbnailUrl: {
             type: String,
             required: true
-        }, 
+        },
         videoUrl: {
             type: String,
             required: true
@@ -57,7 +58,12 @@ const videoSchema = new mongoose.Schema<Ivideo>(
                 type: Number,
                 min: 1,
                 max: 100
-            }
+            },
+        },
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true
         }
     },
     {

@@ -8,6 +8,7 @@ export interface Iuser {
     email: string,
     password: string,
     isVerified: boolean,
+    avatar: string,
     createdAt?: Date,
     updatedAt?: Date
 }
@@ -31,6 +32,9 @@ const userSchema = new mongoose.Schema<Iuser>(
             type: Boolean,
             required: true,
             default: false
+        },
+        avatar: {
+            type: String,
         }
     },
     {

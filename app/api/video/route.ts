@@ -26,6 +26,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
     try {
         const session = await getServerSession(authOptions);
+        console.log(session);
 
         if (!session) {
             return NextResponse.json(
@@ -37,6 +38,7 @@ export async function POST(request: NextRequest) {
         await connectToDatabase();
 
         const body: Ivideo = await request.json();
+        console.log(body)
 
         if (!body.title || !body.description || !body.videoUrl || !body.thumbnailUrl) {
             return NextResponse.json(
@@ -52,14 +54,18 @@ export async function POST(request: NextRequest) {
                 height: 1920,
                 width: 1080,
                 quality: body.transformations?.quality ?? 100
-            }
+            },
+            user: session.user.id
         };
+        console.log(videoData);
 
         const newVideo = await Video.create(videoData);
+        console.log(newVideo)
 
         return NextResponse.json(newVideo);
 
     } catch (error) {
+        console.error(error)
         return NextResponse.json(
                 {error: "Failed to upload video"},
                 {status: 500}

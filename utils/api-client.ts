@@ -1,3 +1,4 @@
+import { updateFormData } from "@/app/api/auth/update-details/route";
 import { Iuser } from "@/models/user.model";
 import { Ivideo } from "@/models/video.model";
 
@@ -35,6 +36,10 @@ class ApiClient {
             body: body ? JSON.stringify(body) : undefined
         })
 
+        if (!response.ok) {
+            throw new Error(await response.text())
+        }
+
         return response.json()
     }
 
@@ -67,14 +72,25 @@ class ApiClient {
     }
 
     async getVideos() {
-        return this.fetch("/videos")
+        return this.fetch("/video")
     }
 
     async createVideo(videoData: videoFormData) {
-        return this.fetch("/videos", {
+        return this.fetch("/video", {
             method: "POST",
             body: videoData
         })
+    }
+
+    async updateDetails(updateFormData: updateFormData) {
+        return this.fetch("/auth/update-details", {
+            method: "PATCH",
+            body: updateFormData
+        })
+    }
+
+    async getSelectedVideo(id: string) {
+        return this.fetch(`/video/:${id}`)
     }
 }
 

@@ -6,7 +6,7 @@ import FileUpload from "../components/FileUpload";
 import Button from "../components/Button";
 import { apiClient, videoFormData } from "@/utils/api-client";
 import { UploadResponse } from "@imagekit/next";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 function uploadVideo() {
   const [title, setTitle] = useState<string>("");
@@ -36,14 +36,8 @@ function uploadVideo() {
         thumbnailUrl: videoData?.thumbnailUrl,
         controls: true,
       });
-
-      const data = await response;
-
-      if (!data) {
-        alert("failed to create video");
-      } else {
-        router.push("/");
-      }
+      console.log("response", response);
+      router.push("/");
     } catch (error) {
       console.error(error);
       setError("server error: Failed to upload image, try again after some time")
