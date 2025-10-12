@@ -1,15 +1,17 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import VideoComponent from "./VideoComponent";
+import VideoComponent, { videoDataTypes } from "./VideoComponent";
 import { apiClient, videoFormData } from "@/utils/api-client";
+import { responseType } from "./Header";
+import { useVideoStore } from "@/store/videoStore";
 
 function Tranding() {
-  const [allVideos, setAllVideos] = useState<Array<videoFormData>>([]);
+  const [allVideos, setAllVideos] = useState<Array<videoDataTypes>>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
-  console.log(allVideos)
+  const {videos} = useVideoStore()
 
   useEffect(() => {
     const getAllVideos = async () => {
@@ -19,8 +21,12 @@ function Tranding() {
         if (!response) {
           throw new Error("Failed to fetch the videos");
         } else {
-          console.log(response);
-          setAllVideos(Array.isArray(response) ? (response as videoFormData[]) : [response as videoFormData]);
+          const data = response as responseType;
+          if(videos.length > 0) {
+            setAllVideos(videos)
+          } else if (videos.length <= 0) {
+            setAllVideos(data.videos)
+          }
         }
       } catch (error) {
         console.error(error);
@@ -28,7 +34,7 @@ function Tranding() {
     };
 
     getAllVideos();
-  }, []);
+  }, [videos]);
 
   return (
     <div>

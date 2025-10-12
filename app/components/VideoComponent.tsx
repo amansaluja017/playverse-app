@@ -1,30 +1,31 @@
-import { apiClient } from "@/utils/api-client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-type videoDataTypes = {
+export type videoDataTypes = {
+  _id: string;
   title: string;
   description: string;
   videoUrl: string;
   thumbnailUrl: string;
+  user?: {
+    name: string
+  },
+  controls?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 };
 
 function VideoComponent({ allVideos }: { allVideos: Array<videoDataTypes> }) {
   const [loading, setLoading] = useState<boolean>(false);
+  const [videoData, setVideoData] = useState<videoDataTypes>();
 
   const { data: session } = useSession();
-  console.log(allVideos);
   const router = useRouter();
 
   const handleClick = async (id: string) => {
-
-    const response = await apiClient.getSelectedVideo(id);
-    console.log(response);
-
-    router.push("/play")
+    
+    router.push(`/play?id=${id}`)
   }
 
   return (
@@ -37,7 +38,7 @@ function VideoComponent({ allVideos }: { allVideos: Array<videoDataTypes> }) {
                 key={i}
                 className="h-[320px] w-[350px] border-2 border-blue-600 text-[#472A98] rounded-2xl flex justify-center items-center">
                 <div className="flex flex-col gap-3">
-                  <div onClick={() => handleClick(src.videoUrl)} className="h-[200px] w-[320px] overflow-hidden rounded-2xl">
+                  <div onClick={() => handleClick(src._id)} className="h-[200px] w-[320px] overflow-hidden rounded-2xl cursor-pointer">
                     <img
                       className="object-cover object-center h-full w-full"
                       src={src.thumbnailUrl}

@@ -14,7 +14,14 @@ export async function GET() {
             return NextResponse.json({}, {status: 200})
         }
 
-        return NextResponse.json(videos);
+        const videosWithChannelName = await Video.find({}).populate("user", "name -_id");
+
+        const videoWithTitleAndName = Array.isArray(videosWithChannelName) ? videosWithChannelName : [];
+
+        return NextResponse.json({
+            videos,
+            videoWithTitleAndName
+        });
     } catch (error) {
         return NextResponse.json(
             {error: "Faild to load videos"},

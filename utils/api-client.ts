@@ -88,9 +88,8 @@ class ApiClient {
             body: updateFormData
         })
     }
-
     async getSelectedVideo(id: string) {
-        return this.fetch(`/video/:${id}`)
+        return this.fetch(`/video/${encodeURIComponent(id)}`)
     }
 }
 

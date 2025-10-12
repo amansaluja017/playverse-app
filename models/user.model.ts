@@ -9,6 +9,7 @@ export interface Iuser {
     password: string,
     isVerified: boolean,
     avatar: string,
+    watchHistory: Array<mongoose.Types.ObjectId>,
     createdAt?: Date,
     updatedAt?: Date
 }
@@ -35,7 +36,13 @@ const userSchema = new mongoose.Schema<Iuser>(
         },
         avatar: {
             type: String,
-        }
+        },
+        watchHistory: [
+            {
+                type: mongoose.Types.ObjectId,
+                ref: "Video"
+            }
+        ]
     },
     {
         timestamps: true
