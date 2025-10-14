@@ -4,7 +4,7 @@ import { useVideoStore } from "@/store/videoStore";
 import { apiClient } from "@/utils/api-client";
 import { usePathname, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { videoDataTypes } from "../components/VideoComponent";
+import { videoDataTypes } from "../components/VideoSection";
 import { Video } from "@imagekit/next";
 import Container from "../components/Container";
 

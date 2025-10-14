@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import VideoComponent, { videoDataTypes } from "./VideoComponent";
+import { videoDataTypes } from "./VideoSection";
 import { apiClient, videoFormData } from "@/utils/api-client";
 import { responseType } from "./Header";
 import { useVideoStore } from "@/store/videoStore";
+import VideoSection from "./VideoSection";
 
 function Tranding() {
   const [allVideos, setAllVideos] = useState<Array<videoDataTypes>>([]);
@@ -38,7 +39,7 @@ function Tranding() {
 
   return (
     <div>
-      <VideoComponent allVideos={allVideos} />
+      <VideoSection allVideos={allVideos} />
     </div>
   );
 }

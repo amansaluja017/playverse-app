@@ -1,47 +1,104 @@
 "use client";
 
 import { signOut, useSession } from "next-auth/react";
-import React, { useEffect, useId, useState } from "react";
+import React, { useEffect, useId, useRef, useState } from "react";
 import Button from "./Button";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { apiClient } from "@/utils/api-client";
-import { videoDataTypes } from "./VideoComponent";
+import { videoDataTypes } from "./VideoSection";
 import { useVideoStore } from "@/store/videoStore";
+import MicSection from "./MicSection";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
 
 export interface responseType {
   videos: Array<videoDataTypes>;
-  videoWithTitleAndName: Array<videoDataTypes>;
+  // videoWithTitleAndName: Array<videoDataTypes>;
 }
 
 function Header() {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const [videos, setVideos] = useState<Array<videoDataTypes>>([]);
   const [searchVideo, setSearchVideo] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const [micSectionPanel, setMicSectionPanel] = useState<boolean>(false);
+  const [isListening, setIsListening] = useState<boolean>(false);
+  const [text, setText] = useState<string>("");
   const router = useRouter();
   const searchId = useId();
+
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    finalTranscript,
+    interimTranscript,
+    browserSupportsSpeechRecognition,
+  } = useSpeechRecognition();
+
+  const pathname = usePathname();
 
   const setVideo = useVideoStore((state) => state.setVideo);
   const { clearVideo } = useVideoStore();
 
   useEffect(() => {
-    (async () => {
-      const response = await apiClient.getVideos();
-      if (!response) return;
+    if (!browserSupportsSpeechRecognition) {
+      alert("your browser does not spport speech recognition");
+      return;
+    }
 
-      const data = response as responseType;
-      if (!data.videoWithTitleAndName) return;
+    if (!isListening) {
+      SpeechRecognition.stopListening();
+      return;
+    }
 
-      console.log(data.videoWithTitleAndName[0]);
-      const filterData = data.videoWithTitleAndName;
+    if (isListening) {
+      SpeechRecognition.startListening();
+    }
 
-      setVideos(filterData);
-    })();
-  }, []);
+    let lastTranscript = transcript;
+
+    const interval = setTimeout(() => {
+      if (lastTranscript === transcript && transcript.length > 0) {
+        SpeechRecognition.stopListening();
+        setIsListening(false);
+        setMicSectionPanel(false);
+        clearInterval(interval);
+      }
+
+      lastTranscript = transcript;
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [isListening, transcript]);
+
+  useEffect(() => {
+    if (!listening && transcript) {
+      setSearchVideo(transcript);
+      handleEnter();
+      resetTranscript();
+    }
+  }, [transcript, listening, resetTranscript]);
+
+  // useEffect(() => {
+  //   (async () => {
+  //     const response = await apiClient.getVideos();
+  //     if (!response) return;
+
+  //     const data = response as responseType;
+  //     if (!data.videoWithTitleAndName) return;
+
+  //     const filterData = data.videoWithTitleAndName;
+
+  //     setVideos(filterData);
+  //   })();
+  // }, []);
 
   useEffect(() => {
     if (searchVideo.trim() === "") {
@@ -50,50 +107,86 @@ function Header() {
     }
   }, [searchVideo]);
 
-  const handleEnter = () => {
-    const term = searchVideo.toLowerCase();
+  // const handleEnter = () => {
+  //   const term = searchVideo.toLowerCase();
 
-    const filterVideosTitle = videos.filter((video) =>
-      (video.title ?? "").toLowerCase().includes(term)
-    );
+  //   const filterVideosTitle = videos.filter((video) =>
+  //     (video.title ?? "").toLowerCase().includes(term)
+  //   );
 
-    const filtervideosName = videos.filter((video) =>
-      (video?.user?.name ?? "").toLowerCase().includes(term)
-    );
+  //   const filtervideosName = videos.filter((video) =>
+  //     (video?.user?.name ?? "").toLowerCase().includes(term)
+  //   );
 
-    if (filterVideosTitle.length > 0 && searchVideo.length > 0) {
-      setVideo(filterVideosTitle);
-    } else if (filtervideosName.length > 0 && searchVideo.length > 0) {
-      setVideo(filtervideosName);
+  //   if (filterVideosTitle.length > 0 && searchVideo.length > 0) {
+  //     setVideo(filterVideosTitle);
+  //   } else if (filtervideosName.length > 0 && searchVideo.length > 0) {
+  //     setVideo(filtervideosName);
+  //   }
+  // };
+
+  const handleEnter = async () => {
+    try {
+      const response = await apiClient.searchVideo(searchVideo);
+      console.log(response);
+
+      if (!response) return;
+      router.push("/result");
+
+      setVideo(Array.isArray(response) ? (response as videoDataTypes[]) : []);
+    } catch (error) {
+      console.error(error);
+      setError("");
     }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
+      if (searchVideo.length < 1) return;
+
       handleEnter();
     }
   };
 
   return (
     <header className="max-w-full bg-[#0B031C]">
+      {micSectionPanel && (
+        <div>
+          <MicSection
+            isListening={isListening}
+            setIsListening={setIsListening}
+            transcript={transcript}
+            setMicSectionPanel={setMicSectionPanel}
+          />
+        </div>
+      )}
+
       <div className="flex items-center justify-between p-3 px-15">
         <div className="w-20 cursor-pointer">
           <img src="/logo.svg" alt="logo" />
         </div>
 
-        <div>
-          <i className="fa-solid fa-magnifying-glass relative left-[2rem] text-[#014C9A]"></i>
-          <input
-            id={searchId}
-            type="search"
-            placeholder="search"
-            onChange={(e) => setSearchVideo(e.target.value)}
-            onKeyDown={handleKeyDown}
-            className="relative rounded-full border-2 border-[#014C9A] p-1 pl-10 pr-10"
-            size={50}
-          />
-          <i className="fa-solid fa-microphone relative right-[2rem] text-[#014C9A] cursor-pointer"></i>
-        </div>
+        {pathname.endsWith("/") && (
+          <div>
+            <i className="fa-solid fa-magnifying-glass relative left-[2rem] text-[#014C9A]"></i>
+            <input
+              id={searchId}
+              type="search"
+              placeholder="search"
+              value={searchVideo}
+              onChange={(e) => setSearchVideo(e.target.value)}
+              onKeyDown={handleKeyDown}
+              className="relative rounded-full border-2 border-[#014C9A] p-1 pl-10 pr-10"
+              size={50}
+            />
+            <i
+              onClick={() => {
+                setIsListening(true);
+                setMicSectionPanel(true);
+              }}
+              className="fa-solid fa-microphone relative right-[2rem] text-[#014C9A] cursor-pointer"></i>
+          </div>
+        )}
 
         <div className="flex gap-10 items-center">
           <i className="fa-solid fa-bell text-2xl text-[#014C9A] cursor-pointer"></i>

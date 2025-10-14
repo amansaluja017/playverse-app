@@ -116,46 +116,47 @@ function registerPage() {
           </div>
         )}
 
-        <div className="relative w-[54rem] h-[43rem] p-[2px] rounded-xl overflow-hidden bg-gradient-to-br from-[#0b2f68] to-[#982822] items-center justify-center">
+        <div className="relative p-[2px] rounded-xl overflow-hidden bg-gradient-to-br from-[#0b2f68] to-[#982822] items-center justify-center">
           <div className="relative w-full h-full p-6 rounded-xl bg-[#0B031C]">
-            <div className="w-[77.1px] h-[30.5px] ml-10 mt-10">
-              <img src="/logo.svg" alt="logo" />
+            <div className="p-4">
+              <img className="max-w-20" src="/logo.svg" alt="logo" />
+
+              <div>
+                <h1 className={`text-[2.7rem] ${sitka.className}`}>
+                  Create Account
+                </h1>
+                <p className="opacity-24 font-segoe-ui text-[1rem] leading-[1.37px] text-[#edf4e3]">
+                  Dive into the new world
+                </p>
+              </div>
             </div>
 
-            <div>
-              <h1 className={`text-[2.7rem] pl-10 ${sitka.className}`}>
-                Create Account
-              </h1>
-              <p className="mt-[1.4px] mr-[103.4px] ml-[0.6px] pl-10 opacity-24 font-segoe-ui text-[1rem] leading-[1.37px] text-left text-[#edf4e3]">
-                Dive into the new world
-              </p>
-            </div>
-
-            <div className="items-center justify-center p-5 pl-[10rem] pr-[10rem] pt-7">
+            <div className="items-center justify-center p-5">
               <form
                 onSubmit={handleSubmit}
                 autoComplete="true"
-                className="flex flex-col">
-                <div className="flex flex-col">
+                className="flex flex-col px-[5rem]">
+                <div className="flex flex-col gap-2">
                   <label className="" htmlFor="name">
                     Name
                   </label>
                   <input
-                    className="mt-[0.8rem] p-2 pl-5 rounded-[27px] border #707070 border-solid placeholder:text-sm placeholder:opacity-40"
+                    className="p-2 pl-5 rounded-[27px] border #707070 border-solid placeholder:text-sm placeholder:opacity-40"
                     id="name"
                     autoComplete="true"
                     type="text"
                     placeholder="Enter your name eg: John Doe"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
+                    size={45}
                   />
                 </div>
 
-                <div className="mt-5 flex flex-col">
+                <div className="mt-5 flex flex-col gap-2">
                   <label htmlFor="email">Email</label>
                   <div className="relative">
                     <input
-                      className="w-full mt-[0.8rem] p-2 pl-5 rounded-[27px] border #707070 border-solid placeholder:text-sm placeholder:opacity-40"
+                      className="w-full p-2 pl-5 rounded-[27px] border #707070 border-solid placeholder:text-sm placeholder:opacity-40"
                       id="email"
                       autoComplete="true"
                       type="email"
@@ -165,16 +166,16 @@ function registerPage() {
                     />
                     <div
                       onClick={otpVerification}
-                      className="absolute right-0 bottom-0 top-[12px] rounded-tr-[27px] rounded-br-[27px] w-[79px] h-[42px] flex justify-center items-center cursor-pointer border #707070 border-solid bg-gradient-to-r from-[#0b2f68] to-[#982822]">
+                      className="absolute right-0 top-0 h-full px-5 rounded-tr-[27px] rounded-br-[27px] flex justify-center items-center cursor-pointer bg-gradient-to-br from-[#0b2f68] to-[#982822]">
                       <span>verify</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="mt-5 flex flex-col">
+                <div className="mt-5 flex flex-col gap-2">
                   <label htmlFor="password">Password</label>
                   <input
-                    className="mt-[0.8rem] p-2 pl-5 rounded-[27px] border #707070 border-solid placeholder:text-sm placeholder:opacity-40"
+                    className="p-2 pl-5 rounded-[27px] border #707070 border-solid placeholder:text-sm placeholder:opacity-40"
                     id="password"
                     autoComplete="true"
                     type="password"
@@ -184,10 +185,10 @@ function registerPage() {
                   />
                 </div>
 
-                <div className="mt-5 flex flex-col">
+                <div className="mt-5 flex flex-col gap-2">
                   <label htmlFor="confirmPassword">Confirm Password</label>
                   <input
-                    className="mt-[0.8rem] p-2 pl-5 rounded-[27px] border #707070 border-solid placeholder:text-sm placeholder:opacity-40"
+                    className="p-2 pl-5 rounded-[27px] border #707070 border-solid placeholder:text-sm placeholder:opacity-40"
                     id="confirmPassword"
                     autoComplete="true"
                     type="password"
@@ -199,7 +200,9 @@ function registerPage() {
 
                 <div className="flex justify-between">
                   <div className="mt-3 flex gap-1 text-[#edf4e3] text-sm">
-                    <span className={`${sitka.className}`}>Already have a account?</span>
+                    <span className={`${sitka.className}`}>
+                      Already have a account?
+                    </span>
                     <span
                       onClick={() => router.push("/login")}
                       className="cursor-pointer text-[#014c9a] hover:underline">
@@ -207,7 +210,11 @@ function registerPage() {
                     </span>
                   </div>
                   <div className="mt-5">
-                    <Button type="submit" buttonName="Register" className="py-2 px-4" />
+                    <Button
+                      type="submit"
+                      buttonName="Register"
+                      className="py-2 px-4"
+                    />
                   </div>
                 </div>
               </form>

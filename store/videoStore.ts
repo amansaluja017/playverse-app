@@ -1,4 +1,4 @@
-import { videoDataTypes } from "@/app/components/VideoComponent";
+import { videoDataTypes } from "@/app/components/VideoSection";
 import { Ivideo } from "@/models/video.model";
 import {create} from "zustand";
 

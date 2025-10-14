@@ -56,35 +56,37 @@ function uploadVideo() {
           </h1>
         </div>
         <div className="relative p-[2px] rounded-xl overflow-hidden bg-gradient-to-br from-[#0b2f68] to-[#982822] items-center justify-center">
-          <div className="relative w-full h-full p-6 rounded-xl bg-[#0B031C] flex flex-col justify-center">
-            <div className="items-center justify-center p-5 pl-[5rem] pr-[5rem] pt-10 pb-20">
-              <form autoComplete="true" className="flex flex-col">
-                <div className="flex flex-col">
+          <div className="relative w-full h-full rounded-xl bg-[#0B031C] flex flex-col justify-center p-[4rem]">
+            <div className="items-center justify-center">
+              <form autoComplete="true" className="flex flex-col gap-4">
+                <div className="flex flex-col gap-2">
                   <label className="" htmlFor="title">
                     Title
                   </label>
                   <input
-                    className="mt-[0.8rem] p-2 pl-5 rounded-[27px] border #707070 border-solid"
+                    className="p-2 pl-5 rounded-[27px] border #707070 border-solid"
                     id="title"
                     autoComplete="true"
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
+                    size={45}
                   />
                 </div>
 
-                <div className="mt-5 flex flex-col">
+                <div className="flex flex-col gap-2">
                   <label htmlFor="description">Description</label>
 
                   <textarea
-                    className="w-full mt-[0.8rem] p-2 pl-5 rounded-[27px] border #707070 border-solid"
+                    className="w-full p-2 pl-5 rounded-[27px] border #707070 border-solid"
                     id="description"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
+                    rows={4}
                   />
                 </div>
 
-                <div className="mt-5 flex flex-col">
+                <div className="flex flex-col gap-2">
                   <FileUpload
                     onSuccess={(res: UploadResponse) => {
                       setVideoData(res);
@@ -94,10 +96,10 @@ function uploadVideo() {
                 </div>
 
                 <div className="relative flex justify-between">
-                  <div className="mt-5">
+                  <div className="mt-1 absolute right-0">
                     <Button
                       buttonName="Post"
-                      className="py-2 px-4"
+                      className="py-2 px-5"
                       type="submit"
                       onClick={handlePostVideo}
                     />

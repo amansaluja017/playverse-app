@@ -18,6 +18,12 @@ type fetchOptions = {
     headers?: Record<string, string>
 }
 
+export type updateVideoDataForm = {
+    id: string,
+    title?: string,
+    description?: string
+}
+
 class ApiClient {
     private async fetch<T>(
         endpoint: string,
@@ -88,8 +94,28 @@ class ApiClient {
             body: updateFormData
         })
     }
+
+    async watchHistory() {
+        return this.fetch("/auth/watch-history");
+    }
+
     async getSelectedVideo(id: string) {
         return this.fetch(`/video/${encodeURIComponent(id)}`)
+    }
+
+    async getMyVideos() {
+        return this.fetch(`/video/my-video`)
+    }
+
+    async updateVideo(updateVideoData: updateVideoDataForm) {
+        return this.fetch(`/video/my-video`, {
+            method: "PATCH",
+            body: updateVideoData
+        })
+    }
+
+    async searchVideo(query: string) {
+        return this.fetch(`/video/search?query=${query}`)
     }
 }
 

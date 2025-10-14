@@ -40,7 +40,8 @@ const userSchema = new mongoose.Schema<Iuser>(
         watchHistory: [
             {
                 type: mongoose.Types.ObjectId,
-                ref: "Video"
+                ref: "Video",
+                unique: true
             }
         ]
     },

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import VideoComponent, { videoDataTypes } from "./VideoComponent";
+import VideoSection, { videoDataTypes } from "./VideoSection";
 import { apiClient } from "@/utils/api-client";
 import { responseType } from "./Header";
 import { useVideoStore } from "@/store/videoStore";
@@ -37,9 +37,8 @@ function Videos() {
   }, [videos]);
 
   return (
-    <div>
-      <VideoComponent allVideos={allVideos} />
-    </div>
+      <VideoSection allVideos={allVideos} />
+   
   );
 }
 
