@@ -2,6 +2,7 @@
 
 import React, { useId } from "react";
 import { sitka } from "../layout";
+import {Copyright} from "lucide-react"
 
 function Footer() {
   const contactId = useId();
@@ -37,15 +38,17 @@ function Footer() {
           </div>
 
           <div className="relative">
-            <input
+            <div className="relative">
+              <input
               id={contactId}
               type="email"
               placeholder="Enter your email"
               className="rounded-full border-2 px-4 py-2 placeholder:text-sm"
-              size={30}
+              size={35}
             />
-            <div className="absolute right-0 top-0 rounded-tr-[27px] rounded-br-[27px] w-[79px] h-[42px] flex justify-center items-center cursor-pointer border #707070 border-solid bg-gradient-to-r from-[#0b2f68] to-[#982822]">
+            <div className="absolute h-full right-0 top-0 px-4 rounded-tr-[27px] rounded-br-[27px] flex justify-center items-center cursor-pointer bg-gradient-to-r from-[#0b2f68] to-[#982822]">
               <span>submit</span>
+            </div>
             </div>
             <p className="text-sm mt-2 opacity-40">
               We will contact you shortly
@@ -73,8 +76,9 @@ function Footer() {
           </div>
         </div>
       </div>
-      <div className="text-center relative bottom-3">
-        <p className="opacity-40 text-sm">copyright 2025:www.playverse.com</p>
+      <div className="text-center relative bottom-3 flex justify-center items-center">
+        <span className="opacity-40 text-sm flex justify-center items-center gap-1">copyright 2025<Copyright className="h-4 w-4"/></span>
+        <span className="text-sm opacity-40">:www.playverse.com</span>
       </div>
     </footer>
   );

@@ -19,13 +19,24 @@ export const sitka = localFont({
   variable: "--font-sitka",
 });
 
+export const poppins = localFont({
+  src: [
+    {
+      path: "../public/fonts/Poppins-Light.ttf",
+      weight: "400",
+      style: "normal",
+    },
+  ],
+  variable: "--font-poppins",
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${sitka.variable} h-screen w-screen`}>
+    <html lang="en" className={`${sitka.variable} ${poppins.variable} h-screen w-screen`}>
       <head>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
       </head>

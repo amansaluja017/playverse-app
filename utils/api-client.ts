@@ -117,6 +117,10 @@ class ApiClient {
     async searchVideo(query: string) {
         return this.fetch(`/video/search?query=${query}`)
     }
+
+    async getSuggesions(query: string) {
+        return this.fetch(`/video/suggestion?query=${query}`)
+    }
 }
 
 export const apiClient = new ApiClient();

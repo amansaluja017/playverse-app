@@ -11,7 +11,6 @@ function Profile() {
           <ProfileVideoSection />
         </div>
         <div className="w-[30%] flex justify-start items-center flex-col p-8 shadow-2xl shadow-[#014C9A]/50">
-       
           <ProfileSection />
         </div>
       </div>

@@ -8,8 +8,8 @@ export interface Iuser {
     email: string,
     password: string,
     isVerified: boolean,
-    avatar: string,
-    watchHistory: Array<mongoose.Types.ObjectId>,
+    avatar?: string,
+    watchHistory?: Array<mongoose.Types.ObjectId>,
     createdAt?: Date,
     updatedAt?: Date
 }

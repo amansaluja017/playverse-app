@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export interface updateFormData {
     name?: string,
+    email?: string,
     avatar?: string,
     oldPassword?: string
     password?: string,
@@ -15,7 +16,7 @@ export interface updateFormData {
 
 
 export async function PATCH(request: NextRequest) {
-    const { name, avatar, password, confirmPassword, oldPassword }: updateFormData = await request.json();
+    const { name, avatar, password, confirmPassword, oldPassword, email }: updateFormData = await request.json();
 
     const session = await getServerSession(authOptions);
 
@@ -69,28 +70,28 @@ export async function PATCH(request: NextRequest) {
     } else if (password) {
         if (!confirmPassword || !oldPassword) {
             return NextResponse.json(
-                {error: "All feilds are required"},
-                {status: 400}
+                { error: "All feilds are required" },
+                { status: 400 }
             )
         }
 
         await connectToDatabase();
 
-        const user = await User.findOne({_id: session.user.id});
+        const user = await User.findOne({ _id: session.user.id });
 
         const isValid = await bcrypt.compare(oldPassword, user.password)
 
-        if(!isValid) {
+        if (!isValid) {
             return NextResponse.json(
-                {error: "old password is incorrect"},
-                {status: 400}
+                { error: "old password is incorrect" },
+                { status: 400 }
             )
         }
 
         if (password !== confirmPassword) {
             return NextResponse.json(
-                {error: "password and confirm password does not match"},
-                {status: 400}
+                { error: "password and confirm password does not match" },
+                { status: 400 }
             )
         }
 
@@ -98,8 +99,28 @@ export async function PATCH(request: NextRequest) {
         user.save();
 
         return NextResponse.json(
-            {message: "password is changed successfully"},
-            {status: 200}
+            { message: "password is changed successfully" },
+            { status: 200 }
+        )
+    } else if (email) {
+        await connectToDatabase();
+
+        const user = await User.findByIdAndUpdate(session.user.id, {
+            email
+        }, {
+            new: true
+        })
+
+        if (!user) {
+            throw NextResponse.json(
+                { error: "user not found" },
+                { status: 401 }
+            )
+        }
+
+        return NextResponse.json(
+            { message: "your email has successfully updated" },
+            { status: 200 }
         )
     }
 

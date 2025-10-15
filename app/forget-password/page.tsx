@@ -5,6 +5,7 @@ import OtpPanel from "../components/otpPanel";
 import { sitka } from "../layout";
 import { useRouter } from "next/navigation";
 import Button from "../components/Button";
+import { apiClient } from "@/utils/api-client";
 
 function forgetPassword() {
   const [email, setEmail] = useState<string>("");
@@ -72,24 +73,15 @@ function forgetPassword() {
     e.preventDefault();
 
     try {
-      const response = await fetch("/api/auth/forget-password", {
-        method: "PATCH",
-        headers: {
-          "content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          newPassword,
-          confirmNewPassword
-        })
-      })
+      const response = await apiClient.setPassword({email, newPassword, confirmNewPassword});
 
-      if(response.ok) {
-        alert("Your password is successfully changed")
-        router.push("/login")
-      } else {
-        alert("failed to change the password")
+      if (!response) {
+        alert("failed to set the password")
+        return;
       }
+
+      console.log(response);
+      router.push("/login")
     } catch (error) {
       console.log(error)
       alert("server error: during changing the password")

@@ -3,21 +3,21 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Mic } from "lucide-react";
+import { poppins } from "../layout";
 
 function MicSection({
   transcript,
   setMicSectionPanel,
   isListening,
-  setIsListening
+  setIsListening,
 }: {
   transcript: string;
   setMicSectionPanel: Dispatch<SetStateAction<boolean>>;
-  isListening: boolean,
-  setIsListening: Dispatch<SetStateAction<boolean>>
+  isListening: boolean;
+  setIsListening: Dispatch<SetStateAction<boolean>>;
 }) {
-
   return (
-    <div className="h-[30rem] w-[30rem] flex justify-center items-center rounded-2xl shadow-2xl bg-black fixed inset-0 m-auto z-50">
+    <div className="h-[50%] w-[40%] flex flex-col justify-center items-center gap-4 rounded-2xl shadow-2xl bg-black fixed inset-0 m-auto z-50">
       <motion.div
         animate={
           isListening
@@ -44,8 +44,8 @@ function MicSection({
         <Mic size={150} className="p-4 bg-[#014C9A] rounded-full" />
       </motion.div>
 
-      <div>
-        <p>{transcript}</p>
+      <div className="text-center p-3">
+        <p className={`${poppins.className} text-xl`}>{transcript}</p>
       </div>
     </div>
   );

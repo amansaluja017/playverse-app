@@ -13,20 +13,15 @@ export async function GET(request: NextRequest) {
     try {
         await connectToDatabase();
 
-        const searchVideos = await Video.find(
-            {$text: {$search: query}},
-            {score: {$meta: "textScore"}}
-        ).sort({score: {$meta: "textScore"}}).limit(20);
+        const video = await Video.find({
+            title: {$regex: query, $options: "i"}
+        }).limit(10).select("title _id");
 
-
-        return NextResponse.json(
-            searchVideos
-        )
-        
+        return NextResponse.json(video);
     } catch (error) {
-        console.log(error);
+        console.error(error)
         return NextResponse.json(
-            {error: "server error: failed to search"},
+            {error: "internal server error: failed to get suggestions"},
             {status: 500}
         )
     }
