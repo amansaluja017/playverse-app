@@ -12,30 +12,19 @@ function Tranding() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
-  const {videos} = useVideoStore()
-
   useEffect(() => {
-    const getAllVideos = async () => {
+    (async () => {
       try {
         const response = await apiClient.getVideos();
 
         if (!response) {
           throw new Error("Failed to fetch the videos");
-        } else {
-          const data = response as responseType;
-          if(videos.length > 0) {
-            setAllVideos(videos)
-          } else if (videos.length <= 0) {
-            setAllVideos(data.videos)
-          }
-        }
+        } else setAllVideos(Array.isArray(response) ? response as videoDataTypes[] : [])
       } catch (error) {
         console.error(error);
       }
-    };
-
-    getAllVideos();
-  }, [videos]);
+    })();
+  }, []);
 
   return (
     <div>

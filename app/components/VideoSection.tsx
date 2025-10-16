@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useState } from "react";
 import VideoComponent from "./VideoComponent";
@@ -9,9 +9,7 @@ export type videoDataTypes = {
   description?: string;
   videoUrl: string;
   thumbnailUrl: string;
-  user?: {
-    name: string
-  },
+  user: string;
   controls?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
@@ -19,17 +17,17 @@ export type videoDataTypes = {
 
 function VideoSection({ allVideos }: { allVideos: Array<videoDataTypes> }) {
   const [loading, setLoading] = useState<boolean>(false);
+  console.log(allVideos);
 
   return (
     <>
       {allVideos.length > 0 ? (
         <div className="grid grid-cols-4 gap-5">
-          {allVideos.length > 0 &&
-            allVideos.map((src, i) => (
-              <div key={i}>
-                <VideoComponent src={src}  />
-              </div>
-            ))}
+          {allVideos.map((src, i) => (
+            <div key={i}>
+              <VideoComponent src={src} />
+            </div>
+          ))}
         </div>
       ) : (
         <div>

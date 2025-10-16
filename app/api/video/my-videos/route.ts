@@ -6,6 +6,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 
 export async function GET() {
+    console.log("my videos")
     const session = await getServerSession(authOptions);
 
    if(!session) {

@@ -17,10 +17,6 @@ import SpeechRecognition, {
 } from "react-speech-recognition";
 import Suggestion from "./Suggestion";
 
-export interface responseType {
-  videos: Array<videoDataTypes>;
-}
-
 function Header() {
   const { data: session } = useSession();
   const [videos, setVideos] = useState<Array<videoDataTypes>>([]);
@@ -87,10 +83,10 @@ function Header() {
   }, [searchVideo]);
 
   const handleEnter = async () => {
-      const newParams = new URLSearchParams(params.toString());
-      newParams.set("query", searchVideo);
-      router.push(`/search?${newParams.toString()}`);
-      resetTranscript();
+    const newParams = new URLSearchParams(params.toString());
+    newParams.set("query", searchVideo);
+    router.push(`/search?${newParams.toString()}`);
+    resetTranscript();
   };
 
   useEffect(() => {
@@ -140,6 +136,7 @@ function Header() {
             <div className="flex justify-center items-center flex-1">
               <i className="fa-solid fa-magnifying-glass relative left-[2rem] text-[#014C9A]"></i>
               <input
+                autoComplete="off"
                 id={searchId}
                 type="search"
                 placeholder="search"
@@ -159,7 +156,11 @@ function Header() {
             </div>
             {suggestionPanel && (
               <div className="absolute w-full flex justify-center items-center px-10">
-                <Suggestion searchVideo={searchVideo} setSearchVideo={setSearchVideo} setSuggestionPanel={setSuggestionPanel} />
+                <Suggestion
+                  searchVideo={searchVideo}
+                  setSearchVideo={setSearchVideo}
+                  setSuggestionPanel={setSuggestionPanel}
+                />
               </div>
             )}
           </div>

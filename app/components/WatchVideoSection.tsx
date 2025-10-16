@@ -2,7 +2,7 @@ import React from 'react'
 import VideoSection, { videoDataTypes } from './VideoSection'
 import WatchHistoryContainer from './WatchHistoryContainer';
 
-function WatchVideoSection({allVideos}: {allVideos: videoDataTypes[]}) {
+function WatchVideoSection({historyVideos}: {historyVideos: videoDataTypes[]}) {
   return (
     <div className='flex flex-col gap-4'>
         <h4 className='text-3xl font-bold'>
@@ -10,7 +10,7 @@ function WatchVideoSection({allVideos}: {allVideos: videoDataTypes[]}) {
         </h4>
 
         <div className=''>
-            <WatchHistoryContainer allVideos={allVideos} />
+            <WatchHistoryContainer historyVideos={historyVideos} />
         </div>
     </div>
   )

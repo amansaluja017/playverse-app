@@ -55,6 +55,7 @@ const FileUpload = ({ onSuccess, onProgress, fileType }: FileUploadProps) => {
 
     try {
       const response = await fetch("/api/auth/imagekit-auth");
+      console.log(response);
       const data = await response.json();
       console.log(data);
 
@@ -94,9 +95,7 @@ const FileUpload = ({ onSuccess, onProgress, fileType }: FileUploadProps) => {
 
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
       const file = e.dataTransfer.files[0];
-      console.log(file);
       setFilePreview(URL.createObjectURL(file));
-      console.log(file.name);
 
       if (fileRef.current) {
         const dataTransfer = new DataTransfer();

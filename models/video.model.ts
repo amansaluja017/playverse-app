@@ -77,5 +77,3 @@ videoSchema.index({
 });
 
 export const Video = models?.Video || mongoose.model<Ivideo>("Video", videoSchema);
-
-await Video.init();

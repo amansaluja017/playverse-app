@@ -7,40 +7,37 @@ import { NextRequest, NextResponse } from "next/server";
 
 
 
-export async function GET(request: NextRequest, {params}: {params: {id: string}}) {
-    const {id} = params;
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
     const session = await getServerSession(authOptions);
 
     if (!id) {
         return NextResponse.json(
-            {error: "missing video id"},
-            {status: 404}
+            { error: "missing video id" },
+            { status: 404 }
         )
     }
 
     await connectToDatabase();
 
-    const video = await Video.findOne({_id: id});
+    const video = await Video.findOne({ _id: id });
 
     if (!video) {
         return NextResponse.json(
-            {error: "video not found"},
-            {status: 404}
+            { error: "video not found" },
+            { status: 404 }
         )
     }
 
-    const user: Iuser| null = await User.findOne({_id: session?.user.id})
+    const user: Iuser | null = await User.findOne({ _id: session?.user.id });
 
-    if (user?.watchHistory?.includes(video._id)) {
-        console.log("true")
-        return;
+    if (!user?.watchHistory?.includes(video._id)) {
+        await User.findOneAndUpdate({ _id: session?.user.id }, {
+            $push: { watchHistory: video._id }
+        })
     }
-
-    await User.findOneAndUpdate({_id: session?.user.id}, {
-        $push: {watchHistory: video._id}
-    })
 
     return NextResponse.json(
         video
     )
-}
+};

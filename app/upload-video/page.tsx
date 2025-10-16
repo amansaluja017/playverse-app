@@ -17,14 +17,14 @@ function uploadVideo() {
 
   const router = useRouter();
 
+  console.log(videoData)
+
   const handlePostVideo = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
     if (!videoData?.url) {
       throw new Error("Upload a video");
-    } else if (!videoData?.thumbnailUrl) {
-      throw new Error("upload a thumbnail");
     }
 
     try {
@@ -33,7 +33,7 @@ function uploadVideo() {
         title,
         description,
         videoUrl: videoData?.url,
-        thumbnailUrl: videoData?.thumbnailUrl,
+        thumbnailUrl: `${videoData?.url}/ik-thumbnail.jpg`,
         controls: true,
       });
       console.log("response", response);

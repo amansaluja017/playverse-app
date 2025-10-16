@@ -6,7 +6,7 @@ import { apiClient } from "@/utils/api-client";
 import { videoDataTypes } from "./VideoSection";
 
 function ProfileVideoSection() {
-  const [allVideos, setAllVideos] = useState<Array<videoDataTypes>>([]);
+  const [historyVideos, SetAllHistoryVideos] = useState<Array<videoDataTypes>>([]);
 
   useEffect(() => {
     const toggleWatchHistory = async () => {
@@ -21,9 +21,11 @@ function ProfileVideoSection() {
         }
         console.log(data);
 
-        setAllVideos(data);
+        SetAllHistoryVideos(data);
 
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+      }
     };
 
     toggleWatchHistory()
@@ -32,13 +34,13 @@ function ProfileVideoSection() {
   return (
     <div className="p-10 flex flex-col gap-10 w-full">
       <div>
-        <WatchVideoSection allVideos={allVideos} />
+        <WatchVideoSection historyVideos={historyVideos} />
       </div>
       <div>
-         <WatchVideoSection allVideos={allVideos} />
+         <WatchVideoSection historyVideos={historyVideos} />
       </div>
       <div>
-         <WatchVideoSection allVideos={allVideos} />
+         <WatchVideoSection historyVideos={historyVideos} />
       </div>
     </div>
   );

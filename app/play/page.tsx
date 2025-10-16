@@ -1,21 +1,17 @@
 "use client";
 
-import { useVideoStore } from "@/store/videoStore";
 import { apiClient } from "@/utils/api-client";
 import { usePathname, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { videoDataTypes } from "../components/VideoSection";
-import { Video } from "@imagekit/next";
 import Container from "../components/Container";
+import VideoPlayer from "../components/VideoPlayer";
 
 function page() {
-  const [video, setVideo] = useState<videoDataTypes>();
-  const pathName = usePathname();
+  const [videoUrl, setVideoUrl] = useState<string>("");
+  const [thumbnailUrl, setThumbnailUrl] = useState<string>("");
   const params = useSearchParams();
   const id = params.get("id");
-  console.log(id);
-
-  console.log(pathName);
 
   useEffect(() => {
     (async () => {
@@ -29,22 +25,25 @@ function page() {
       if (!response) return;
 
       const video = response as videoDataTypes;
-      setVideo(video);
+
+      if (!video) {
+        alert("video does not exists");
+        return;
+      }
+
+      setVideoUrl(video.videoUrl);
+      setThumbnailUrl(video.thumbnailUrl);
     })();
   }, []);
 
+
+
   return (
-   <Container>
-     <div className="p-15 bg-[#0B031C]">
-      <Video
-      className="rounded-2xl"
-        controls
-        urlEndpoint={process.env.NEXT_PUBLIC_URL_ENDPOINT}
-        height={1920}
-        width={1080}
-        src="https://ik.imagekit.io/aman001/sample-video.mp4?updatedAt=1741427783313"></Video>
-    </div>
-   </Container>
+    <Container>
+      <div className="w-screen h-screen bg-[#0B031C]">
+        <VideoPlayer videoUrl={videoUrl} thumbnailUrl={thumbnailUrl}  />
+      </div>
+    </Container>
   );
 }
 
