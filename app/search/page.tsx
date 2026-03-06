@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import VideoSection, { videoDataTypes } from "../components/VideoSection";
-import { useVideoStore } from "@/store/videoStore";
 import Container from "../components/Container";
 import { useSearchParams } from "next/navigation";
 import { apiClient } from "@/utils/api-client";

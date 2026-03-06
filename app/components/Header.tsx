@@ -16,6 +16,7 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import Suggestion from "./Suggestion";
+import { img } from "framer-motion/m";
 
 function Header() {
   const { data: session } = useSession();
@@ -134,7 +135,7 @@ function Header() {
         {(pathname.endsWith("/") || pathname.startsWith("/search")) && (
           <div className="relative">
             <div className="flex justify-center items-center flex-1">
-              <i className="fa-solid fa-magnifying-glass relative left-[2rem] text-[#014C9A]"></i>
+              <i className="fa-solid fa-magnifying-glass relative left-8 text-[#014C9A]"></i>
               <input
                 autoComplete="off"
                 id={searchId}
@@ -152,7 +153,7 @@ function Header() {
                   setIsListening(true);
                   setMicSectionPanel(true);
                 }}
-                className="fa-solid fa-microphone relative right-[2rem] text-[#014C9A] cursor-pointer"></i>
+                className="fa-solid fa-microphone relative right-8 text-[#014C9A] cursor-pointer"></i>
             </div>
             {suggestionPanel && (
               <div className="absolute w-full flex justify-center items-center px-10">
@@ -172,13 +173,19 @@ function Header() {
             <Popover>
               <PopoverTrigger>
                 <div className="rounded-full h-10 w-10 bg-blue-400 cursor-pointer">
-                  {/* <img src="" alt="avatar" /> */}
+                  {session.user.image && (
+                    <img src={session?.user.image} alt="avatar" className="rounded-full" />
+                   )}
                 </div>
               </PopoverTrigger>
               <PopoverContent>
                 <div>
                   <div className="flex gap-2 items-center">
-                    <div className="rounded-full h-12 w-12 bg-blue-400"></div>
+                    <div className="rounded-full h-12 w-12 bg-blue-400">
+                      {session.user.image && (
+                        <img src={session?.user.image} alt="avatar" className="rounded-full" />
+                      )}
+                    </div>
                     <div className="flex flex-col">
                       <span className="text-xl">{session.user.name}</span>
                       <span className="text-xs opacity-80">

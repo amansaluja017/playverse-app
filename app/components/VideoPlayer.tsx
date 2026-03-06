@@ -15,12 +15,13 @@ function VideoPlayer({
   const videoRef = useRef<HTMLVideoElement>(null);
   const progressRef = useRef<HTMLInputElement>(null);
 
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [volume, setVolume] = useState(1);
-  const [showControls, setShowControls] = useState(true);
-  const [showThumbnail, setShowThumbnail] = useState(true);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [isMuted, setIsMuted] = useState<boolean>(false);
+  const [progress, setProgress] = useState<number>(0);
+  const [lastVolume, setLastVolume] = useState<number>(100);
+  const [volume, setVolume] = useState<number>(100);
+  const [showControls, setShowControls] = useState<boolean>(false);
+  const [showThumbnail, setShowThumbnail] = useState<boolean>(true);
 
   const togglePlay = () => {
     const video = videoRef.current;
@@ -60,7 +61,7 @@ function VideoPlayer({
   const handleVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
     const vol = parseFloat(e.target.value);
     setVolume(vol);
-    if (videoRef.current) videoRef.current.volume = vol;
+    if (videoRef.current) videoRef.current.volume = vol / 100;
     setIsMuted(vol === 0);
   };
 
@@ -70,6 +71,13 @@ function VideoPlayer({
     }
     setIsMuted(!isMuted);
   };
+
+  useEffect(() => {
+    setLastVolume(volume);
+    console.log(lastVolume)
+    if (isMuted) setVolume(0);
+    else setVolume(lastVolume);
+  }, [isMuted]);
 
   const toggleFullscreen = () => {
     const container = videoRef.current?.parentElement;
@@ -86,8 +94,12 @@ function VideoPlayer({
     <>
       <div
         className="relative w-full max-w-3xl mx-auto rounded-2xl overflow-hidden bg-black group"
+        onMouseLeave={() => setTimeout(() => {
+          setShowControls(false)
+        }, 3000)}
         onMouseEnter={() => setShowControls(true)}
-        onMouseLeave={() => setShowControls(false)}>
+        onClick={() => setShowControls(true)}
+        >
         {/* Video */}
         <Video
           ref={videoRef}
@@ -117,7 +129,7 @@ function VideoPlayer({
             initial={{ opacity: 0 }}
             animate={{ opacity: showControls ? 1 : 0 }}
             transition={{ duration: 0.3 }}
-            className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent px-4 py-3 flex flex-col gap-2">
+            className="absolute bottom-0 left-0 w-full bg-linear-to-t from-black/80 to-transparent px-4 py-3 flex flex-col gap-2">
             {/* Progress Bar */}
             <input
               ref={progressRef}
@@ -145,14 +157,16 @@ function VideoPlayer({
                 </button>
 
                 <input
+                  id="volume"
                   type="range"
                   min="0"
-                  max="1"
-                  step="0.1"
+                  max="100"
+                  step="5"
                   value={volume}
                   onChange={handleVolume}
                   className="w-24 accent-blue-500"
                 />
+                <label htmlFor="volume">{volume}</label>
               </div>
 
               {/* Fullscreen */}

@@ -91,7 +91,6 @@ const FileUpload = ({ onSuccess, onProgress, fileType }: FileUploadProps) => {
 
   const dragOver = (e: React.DragEvent<HTMLLabelElement>) => {
     e.preventDefault();
-    console.log("working");
 
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
       const file = e.dataTransfer.files[0];

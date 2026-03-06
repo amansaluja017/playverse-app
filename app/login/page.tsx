@@ -30,11 +30,21 @@ function loginPage() {
     }
   };
 
+  const googleLogin = async () => {
+    try {
+      await signIn("google", {
+        callbackUrl: "/",
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <>
       <div className="w-screen h-screen bg-[#0B031C] flex flex-col justify-center items-center">
-        <div className="relative p-[2px] rounded-xl overflow-hidden bg-gradient-to-br from-[#0b2f68] to-[#982822] items-center justify-center">
-          <div className="relative p-[4rem] w-full h-full rounded-xl bg-[#0B031C]">
+        <div className="relative p-0.5 rounded-xl overflow-hidden bg-linear-to-br from-[#0b2f68] to-[#982822] items-center justify-center">
+          <div className="relative p-16 w-full h-full rounded-xl bg-[#0B031C]">
             <div className="">
               <div className="">
                 <img className="w-20" src="/logo.svg" alt="logo" />
@@ -47,7 +57,9 @@ function loginPage() {
               </div>
 
               <div className="flex justify-center items-center mt-4">
-                <h3 className={`font-bold ${sitka.className} text-[2.5rem] text-[#edf4e3]`}>
+                <h3
+                  className={`font-bold ${sitka.className} text-[2.5rem] text-[#edf4e3]`}
+                >
                   Login
                 </h3>
               </div>
@@ -56,7 +68,8 @@ function loginPage() {
                 <form
                   onSubmit={handleSubmit}
                   autoComplete="true"
-                  className="flex flex-col gap-3">
+                  className="flex flex-col gap-3"
+                >
                   <div className="flex flex-col gap-2">
                     <label htmlFor="email">Email</label>
 
@@ -75,7 +88,12 @@ function loginPage() {
                   <div className="flex flex-col gap-2">
                     <div className="flex justify-between items-center">
                       <label htmlFor="password">Password</label>
-                    <span onClick={() => router.push("/forget-password")} className="text-sm text-blue-800 cursor-pointer hover:underline">forgot password?</span>
+                      <span
+                        onClick={() => router.push("/forget-password")}
+                        className="text-sm text-blue-800 cursor-pointer hover:underline"
+                      >
+                        forgot password?
+                      </span>
                     </div>
                     <input
                       className="p-2 pl-5 rounded-[27px] border #707070 border-solid placeholder:text-sm placeholder:opacity-40"
@@ -93,15 +111,28 @@ function loginPage() {
                       <span className={`${sitka.className}`}>New user?</span>
                       <span
                         onClick={() => router.push("/register")}
-                        className="cursor-pointer text-[#014c9a] hover:underline">
+                        className="cursor-pointer text-[#014c9a] hover:underline"
+                      >
                         register
                       </span>
                     </div>
                     <div className="mt-5">
-                      <Button buttonName="login" className="py-2 px-5" type="submit" />
+                      <Button
+                        buttonName="login"
+                        className="py-2 px-5"
+                        type="submit"
+                      />
                     </div>
                   </div>
                 </form>
+
+                <div className="mt-5">
+                  <Button
+                    onClick={() => googleLogin()}
+                    buttonName="google login"
+                    className="py-2 px-5"
+                  />
+                </div>
               </div>
             </div>
           </div>

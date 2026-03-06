@@ -1,7 +1,7 @@
 import { apiClient } from "@/utils/api-client";
 import { useDebounce } from "@/utils/debounce";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { Dispatch, MouseEventHandler, SetStateAction, useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 
 interface suggestionType {
   title: string;
@@ -66,7 +66,7 @@ function Suggestion({
   }, []);
 
   return (
-    <div ref={divRef} className="bg-[#171717] h-[10rem] shadow-2xl w-full rounded-2xl shadow-[#014C9A]/20 p-4">
+    <div ref={divRef} className="bg-[#171717] h-40 shadow-2xl w-full rounded-2xl shadow-[#014C9A]/20 p-4">
       {suggestions &&
         suggestions.map((data, i) => (
           <div

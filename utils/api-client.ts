@@ -2,125 +2,131 @@ import { updateFormData } from "@/app/api/auth/update-details/route";
 import { Iuser } from "@/models/user.model";
 import { Ivideo } from "@/models/video.model";
 
-export type videoFormData = Omit<Ivideo, "_id">
+export type videoFormData = Omit<Ivideo, "_id">;
 
-export type userFormData = Omit<Iuser, "_id">
+export type userFormData = Omit<Iuser, "_id">;
 
 export type setPasswordFormData = {
-    email: string,
-    newPassword: string,
-    confirmNewPassword: string
-}
+  email: string;
+  newPassword: string;
+  confirmNewPassword: string;
+};
 
 type fetchOptions = {
-    method?: "GET" | "POST" | "PATCH" | "PUT" | "DELETE",
-    body?: any,
-    headers?: Record<string, string>
-}
+  method?: "GET" | "POST" | "PATCH" | "PUT" | "DELETE";
+  body?: any;
+  headers?: Record<string, string>;
+};
 
 export type updateVideoDataForm = {
-    id: string,
-    title?: string,
-    description?: string
-}
+  id: string;
+  title?: string;
+  description?: string;
+};
 
 class ApiClient {
-    private async fetch<T>(
-        endpoint: string,
-        options: fetchOptions = {}
-    ): Promise<T> {
-        const {method = "GET", body, headers = {}} = options;
+  private async fetch<T>(
+    endpoint: string,
+    options: fetchOptions = {},
+  ): Promise<T> {
+    const { method = "GET", body, headers = {} } = options;
 
-        const defaultHeaders = {
-            "Content-Type": "application/json",
-            ...headers
-        }
+    const defaultHeaders = {
+      "Content-Type": "application/json",
+      ...headers,
+    };
 
-        const response = await fetch(`/api${endpoint}`, {
-            method,
-            headers: defaultHeaders,
-            body: body ? JSON.stringify(body) : undefined
-        })
+    const response = await fetch(`/api${endpoint}`, {
+      method,
+      headers: defaultHeaders,
+      body: body ? JSON.stringify(body) : undefined,
+    });
 
-        if (!response.ok) {
-            throw new Error(await response.text())
-        }
-
-        return response.json()
+    if (!response.ok) {
+      throw new Error(await response.text());
     }
 
-    async createUser(userData: userFormData) {
-        return this.fetch("/auth/register", {
-            method: "POST",
-            body: userData
-        })
-    }
+    return response.json();
+  }
 
-    async getUser(email: string) {
-        return this.fetch("/auth/forget-password", {
-            method: "POST",
-            body: email
-        })
-    }
+  async createUser(userData: userFormData) {
+    return this.fetch("/auth/register", {
+      method: "POST",
+      body: userData,
+    });
+  }
+  
+  async createGoogleUser() {
+    return this.fetch("/auth/register/google-register", {
+      method: "POST",
+    })
+  }
 
-    async setPassword(setPasswordData: setPasswordFormData) {
-        return this.fetch("/auth/forget-password", {
-            method: "PATCH",
-            body: setPasswordData
-        })
-    }
+  async getUser(email: string) {
+    return this.fetch("/auth/forget-password", {
+      method: "POST",
+      body: email,
+    });
+  }
 
-    async sendOtp(email: string) {
-        return this.fetch("/auth/send-otp", {
-            method: "POST",
-            body: email
-        })
-    }
+  async setPassword(setPasswordData: setPasswordFormData) {
+    return this.fetch("/auth/forget-password", {
+      method: "PATCH",
+      body: setPasswordData,
+    });
+  }
 
-    async getVideos() {
-        return this.fetch("/video")
-    }
+  async sendOtp(email: string) {
+    return this.fetch("/auth/send-otp", {
+      method: "POST",
+      body: email,
+    });
+  }
 
-    async createVideo(videoData: videoFormData) {
-        return this.fetch("/video", {
-            method: "POST",
-            body: videoData
-        })
-    }
+  async getVideos() {
+    return this.fetch("/video");
+  }
 
-    async updateDetails(updateFormData: updateFormData) {
-        return this.fetch("/auth/update-details", {
-            method: "PATCH",
-            body: updateFormData
-        })
-    }
+  async createVideo(videoData: videoFormData) {
+    return this.fetch("/video", {
+      method: "POST",
+      body: videoData,
+    });
+  }
 
-    async watchHistory() {
-        return this.fetch("/auth/watch-history");
-    }
+  async updateDetails(updateFormData: updateFormData) {
+    return this.fetch("/auth/update-details", {
+      method: "PATCH",
+      body: updateFormData,
+    });
+  }
 
-    async getSelectedVideo(id: string) {
-        return this.fetch(`/video/${encodeURIComponent(id)}`)
-    }
+  async watchHistory() {
+    return this.fetch("/auth/watch-history");
+  }
 
-    async getMyVideos() {
-        return this.fetch(`/video/my-video`)
-    }
+  async getSelectedVideo(id: string) {
+    return this.fetch(`/video/${encodeURIComponent(id)}`);
+  }
 
-    async updateVideo(updateVideoData: updateVideoDataForm) {
-        return this.fetch(`/video/my-video`, {
-            method: "PATCH",
-            body: updateVideoData
-        })
-    }
+  async getMyVideos() {
+    return this.fetch(`/video/my-video`);
+  }
 
-    async searchVideo(query: string) {
-        return this.fetch(`/video/search?query=${query}`)
-    }
+  async updateVideo(updateVideoData: updateVideoDataForm) {
+    return this.fetch(`/video/my-video`, {
+      method: "PATCH",
+      body: updateVideoData,
+    });
+  }
 
-    async getSuggesions(query: string) {
-        return this.fetch(`/video/suggestion?query=${query}`)
-    }
+  async searchVideo(query: string) {
+    return this.fetch(`/video/search?query=${query}`);
+  }
+
+  async getSuggesions(query: string) {
+    return this.fetch(`/video/suggestion?query=${query}`);
+  }
 }
 
 export const apiClient = new ApiClient();

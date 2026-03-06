@@ -18,7 +18,7 @@ export interface Ivideo {
         width: number,
         quality: number
     },
-    user?: mongoose.Schema.Types.ObjectId,
+    user?: mongoose.Schema.Types.ObjectId | string,
     createdAt?: Date,
     updatedAt?: Date
 };
@@ -61,8 +61,7 @@ const videoSchema = new mongoose.Schema<Ivideo>(
             },
         },
         user: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
+            type: String,
             required: true
         }
     },
