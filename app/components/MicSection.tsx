@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { motion } from "framer-motion";
 import { Mic } from "lucide-react";
 import { poppins } from "../layout";
@@ -20,16 +20,16 @@ function MicSection({
     <div className="h-[50%] w-[40%] flex flex-col justify-center items-center gap-4 rounded-2xl shadow-2xl bg-black fixed inset-0 m-auto z-50">
       <motion.div
         animate={
-          isListening
-            ? {
-                scale: [1, 1.2, 1],
-                boxShadow: [
-                  "0 0 0px #014C9A",
-                  "0 0 20px #014C9A",
-                  "0 0 0px #014C9A",
-                ],
-              }
-            : { scale: 1, boxShadow: "0 0 0px #FFD700" }
+          isListening ?
+            {
+              scale: [1, 1.2, 1],
+              boxShadow: [
+                "0 0 0px #014C9A",
+                "0 0 20px #014C9A",
+                "0 0 0px #014C9A",
+              ],
+            }
+          : { scale: 1, boxShadow: "0 0 0px #FFD700" }
         }
         transition={{
           duration: 1,

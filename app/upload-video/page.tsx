@@ -55,8 +55,8 @@ function uploadVideo() {
             Upload Video
           </h1>
         </div>
-        <div className="relative p-[2px] rounded-xl overflow-hidden bg-gradient-to-br from-[#0b2f68] to-[#982822] items-center justify-center">
-          <div className="relative w-full h-full rounded-xl bg-[#0B031C] flex flex-col justify-center p-[4rem]">
+        <div className="relative p-0.5 rounded-xl overflow-hidden bg-linear-to-br from-[#0b2f68] to-[#982822] items-center justify-center">
+          <div className="relative w-full h-full rounded-xl bg-[#0B031C] flex flex-col justify-center p-16">
             <div className="items-center justify-center">
               <form autoComplete="true" className="flex flex-col gap-4">
                 <div className="flex flex-col gap-2">

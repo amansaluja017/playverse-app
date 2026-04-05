@@ -2,9 +2,6 @@
 
 import {
   ImageKitAbortError,
-  ImageKitInvalidRequestError,
-  ImageKitServerError,
-  ImageKitUploadNetworkError,
   upload,
 } from "@imagekit/next";
 import { useRef, useState } from "react";
@@ -116,7 +113,7 @@ const FileUpload = ({ onSuccess, onProgress, fileType }: FileUploadProps) => {
           <InputFile />
         ) : (
           <div className="flex justify-center">
-            <div className="rounded-2xl h-[8rem] w-[8rem] overflow-hidden">
+            <div className="rounded-2xl h-32 w-32 overflow-hidden">
               <img
                 className="w-full h-full object-fill object-center"
                 src={filePreview}
